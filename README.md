@@ -45,15 +45,21 @@ Oba zdjęcia są powiększone z 360 px, więc ziarno realnie maskuje miękkość
 
 ## Sekcja „Zabiegi"
 
-Nie kafle, tylko **dwukolumnowa lista** (`.zabiegi` / `.zabieg`): nazwa, jedno zdanie,
-cienka kreska nad każdą pozycją. Dziesięć zabiegów dzieli się równo na 5×2, więc
-siatka nie zostawia sieroty w ostatnim rzędzie — to był główny powód, dla którego
-poprzednia wersja z kafelkami i numerami 01–10 wyglądała na chaos. Kreski w obu
-kolumnach są równo, bo pozycje siedzą w jednym gridzie, a nie w dwóch osobnych
-kolumnach CSS. Na wąskim ekranie jedna kolumna.
+**Treść jest od klientki** (06.09.2026) — trzy grupy i jedenaście pozycji z jej
+własnym opisem oferty. Nic tu nie jest zmyślone; nie dopisywać zabiegów z Instagrama,
+których na tej liście nie ma.
 
-**Numeracji tu nie przywracać** — przy dziesięciu pozycjach dokłada szumu i sugeruje
-kolejność, której nie ma.
+Nie kafle, tylko **dwukolumnowa lista** (`.zabiegi` / `.zabieg`) z nagłówkami grup
+(`.zabiegi__grupa`, `grid-column: 1 / -1`). Kreski w obu kolumnach są równo, bo pozycje
+siedzą w jednym gridzie, a nie w dwóch kolumnach CSS. Na wąskim ekranie jedna kolumna.
+**Numeracji nie przywracać** — dokłada szumu i sugeruje kolejność, której nie ma.
+
+## Stopka
+
+Logo od klientki (`img/logo-lilamed.jpg`) ma **własne brązowe tło**, więc tło stopki
+jest ustawione dokładnie na ten sam kolor `#544540` — wyliczony jako mediana pikseli
+z rogów pliku. Dzięki temu nie widać krawędzi obrazka. **Zmiana loga wymaga ponownego
+pobrania tego koloru**, inaczej wokół logo pojawi się prostokąt.
 
 ## Zdjęcia — kto gdzie stoi
 

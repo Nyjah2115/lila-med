@@ -10,6 +10,9 @@ let delay = Double(args[6])!
 
 let app = NSApplication.shared
 let cfg = WKWebViewConfiguration()
+// bez trwałego cache — inaczej WKWebView potrafi wziąć stary style.css,
+// mimo świeżego adresu strony
+cfg.websiteDataStore = .nonPersistent()
 let web = WKWebView(frame: NSRect(x: 0, y: 0, width: w, height: h), configuration: cfg)
 let win = NSWindow(contentRect: NSRect(x: 0, y: 0, width: w, height: h),
                    styleMask: [.borderless], backing: .buffered, defer: false)
