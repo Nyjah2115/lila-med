@@ -1,0 +1,10 @@
+# notatki i materiały robocze — repozytorium jest publiczne
+DANE-DO-POTWIERDZENIA.md
+zdjecia/
+img/warianty/
+podglad-strony.png
+*.zip
+
+# skompilowane narzędzie podglądu
+tools/podglad
+.DS_Store
