@@ -84,8 +84,8 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
 .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;
   background:var(--tlo-2)}
 .hero__tlo{position:absolute;inset:0;z-index:0}
-.hero__tlo img{position:absolute;inset:0;width:100%;height:100%;display:block}
-.hero__tlo img{object-fit:cover;object-position:60% 0%}
+.hero__tlo img{position:absolute;inset:0;width:100%;height:100%;display:block;
+  object-fit:cover;object-position:62% 18%}
 
 /* kremowa zasłona: tekst po lewej musi być czytelny, zdjęcie zostaje po prawej */
 .hero__zaslona{position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -312,7 +312,7 @@ body.zablokowane{overflow:hidden}
 
 /* ===================== RESPONSYWNOŚĆ ===================== */
 @media (max-width:980px){
-  .hero__tlo img{object-position:58% 4%}
+  .hero__tlo img{object-position:60% 10%}
   .hero__zaslona{background:
     linear-gradient(to top, var(--tlo) 0%, rgba(251,247,243,.97) 32%, rgba(251,247,243,.76) 50%,
       rgba(251,247,243,.30) 68%, rgba(251,247,243,.04) 86%),
