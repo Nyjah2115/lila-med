@@ -328,8 +328,8 @@ body.zablokowane{overflow:hidden}
   color:rgba(227,199,159,.62)}
 
 /* ---- reveal ---- */
-.js .reveal{opacity:0;transform:translateY(22px);
-  transition:opacity .8s cubic-bezier(.2,.8,.2,1),transform .8s cubic-bezier(.2,.8,.2,1)}
+.js .reveal{opacity:0;transform:translateY(30px);
+  transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
 .js .reveal.widac{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){
   .js .reveal{opacity:1!important;transform:none!important;transition:none}

@@ -41,12 +41,27 @@ if(burger && menu){
 
 /* ---------- reveal ---------- */
 var doOdkrycia = [].slice.call(document.querySelectorAll(".reveal"));
+var cokolwiekOdkryte = false;
 doOdkrycia.forEach(function(el, i){
-  el.style.transitionDelay = (Math.min(i % 6, 5) * 60) + "ms";
-  widocznosc(el, -60, function(jest){ if(jest) el.classList.add("widac"); });
+  el.style.transitionDelay = (Math.min(i % 6, 5) * 70) + "ms";
+  widocznosc(el, -80, function(jest){
+    if(jest){ el.classList.add("widac"); cokolwiekOdkryte = true; }
+  });
 });
-/* bezpiecznik, gdyby liczenie widoczności nie zadziałało */
-setTimeout(function(){ doOdkrycia.forEach(function(el){ el.classList.add("widac"); }); }, 2500);
+/* Bezpiecznik na wypadek, gdyby liczenie widoczności nie działało. Odpala się
+   dopiero wtedy, gdy ktoś już przewijał, a mimo to nic się nie odsłoniło — bo przy
+   samej górze strony żaden element z animacją jeszcze nie jest widoczny (pierwszy
+   zaczyna się grubo poniżej ekranu) i bezwarunkowe odsłanianie po czasie kasowało
+   cały efekt: zanim ktokolwiek doscrollował, cała strona była już pokazana. */
+var bylScroll = false;
+window.addEventListener("scroll", function(){ bylScroll = true; }, {passive:true});
+(function ratunek(){
+  setTimeout(function(){
+    if(cokolwiekOdkryte) return;          // mechanizm działa, nie ruszamy
+    if(!bylScroll) return ratunek();      // nikt jeszcze nie przewijał — czekamy dalej
+    doOdkrycia.forEach(function(el){ el.classList.add("widac"); });
+  }, 2500);
+})();
 
 function przyScrollu(){
   if(nav) nav.classList.toggle("jest-tlo", window.scrollY > 24);
