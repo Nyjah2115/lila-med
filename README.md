@@ -56,10 +56,15 @@ siedzą w jednym gridzie, a nie w dwóch kolumnach CSS. Na wąskim ekranie jedna
 
 ## Stopka
 
-Logo od klientki (`img/logo-lilamed.jpg`) ma **własne brązowe tło**, więc tło stopki
-jest ustawione dokładnie na ten sam kolor `#544540` — wyliczony jako mediana pikseli
-z rogów pliku. Dzięki temu nie widać krawędzi obrazka. **Zmiana loga wymaga ponownego
-pobrania tego koloru**, inaczej wokół logo pojawi się prostokąt.
+Logo przyszło jako JPEG z wtopionym brązowym tłem. Zamiast dopasowywać tło stopki
+do pliku (kruche — wystarczy inny profil kolorów albo inne logo i widać prostokąt),
+**wyciąłem je na przezroczystość**: alfa liczona jako `max((piksel−tło)/(255−tło))`
+po kanałach, a kolor odzyskany przez `tło + (piksel−tło)/alfa`. Efekt siedzi
+w `img/logo-lilamed.png` i można go położyć na dowolnym tle.
+
+Tło stopki zostało brązowe (`#544540`, kolor z oryginału), bo tak wygląda najlepiej —
+ale nic już od niego nie zależy. Logo stoi po lewej, kontakt po prawej, pod kreską
+nazwisko i godziny.
 
 ## Zdjęcia — kto gdzie stoi
 

@@ -287,20 +287,27 @@ body.zablokowane{overflow:hidden}
 
 /* ---- stopka ---- */
 :root{--stopka-tlo:#544540;--stopka-zloto:#E3C79F}
-.stopka{background:var(--stopka-tlo);padding:0 0 34px;color:#D9CFC6}
-.stopka__inner{display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center}
-/* logo ma własne brązowe tło — tło stopki jest dobrane tak, żeby się z nim zlało */
-.stopka__logo{width:min(300px,72vw);height:auto;display:block;mix-blend-mode:normal}
-.stopka__dane{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 26px;
-  font-size:14px;margin-top:-6px}
-.stopka__dane a{color:#E6DCD3;text-decoration:none;position:relative;padding-bottom:3px;
-  transition:color .3s}
-.stopka__dane a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;
-  background:var(--stopka-zloto);transition:width .35s}
-.stopka__dane a:hover{color:var(--stopka-zloto)}
-.stopka__dane a:hover::after{width:100%}
-.stopka__firma{margin:6px 0 0;font-size:11.5px;letter-spacing:.24em;text-transform:uppercase;
-  color:rgba(227,199,159,.6)}
+.stopka{background:var(--stopka-tlo);color:#DDD3CA;
+  padding:clamp(46px,5vw,66px) 0 22px}
+.stopka__gora{display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(26px,4vw,54px);flex-wrap:wrap;padding-bottom:clamp(30px,4vw,44px)}
+.stopka__logo{display:block;flex:none}
+/* logo jest wycięte na przezroczystość, więc tło stopki może być dowolne
+   i nigdy nie zobaczymy wokół niego prostokąta */
+.stopka__logo img{width:min(230px,58vw);height:auto;display:block;
+  transition:opacity .35s}
+.stopka__logo:hover img{opacity:.82}
+.stopka__kontakt{display:grid;gap:9px;text-align:right;font-size:14.5px;line-height:1.5}
+.stopka__kontakt a{color:#E7DED6;text-decoration:none;justify-self:end;
+  position:relative;padding-bottom:2px;transition:color .3s}
+.stopka__kontakt a::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--stopka-zloto);transform:scaleX(0);transform-origin:right;transition:transform .35s}
+.stopka__kontakt a:hover{color:var(--stopka-zloto)}
+.stopka__kontakt a:hover::after{transform:scaleX(1);transform-origin:left}
+.stopka__dol{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;
+  padding-top:18px;border-top:1px solid rgba(227,199,159,.22);
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(227,199,159,.62)}
 
 /* ---- reveal ---- */
 .js .reveal{opacity:0;transform:translateY(22px);
@@ -343,6 +350,10 @@ body.zablokowane{overflow:hidden}
 }
 @media (max-width:640px){
   body{font-size:16px}
+  .stopka__gora{flex-direction:column;text-align:center}
+  .stopka__kontakt{text-align:center}
+  .stopka__kontakt a{justify-self:center}
+  .stopka__dol{justify-content:center;text-align:center}
   .pas{min-height:0;display:block}
   .pas__foto{position:relative;height:58vw;max-height:340px}
   .pas__zaslona,.pas__ziarno{inset:0 0 auto 0;height:58vw;max-height:340px}
