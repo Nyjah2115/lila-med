@@ -12,6 +12,7 @@
   --braz:#544540;
   --braz-2:#61504A;
   --akcent:#A07C3C;
+  --akcent-ciemny:#7A5B24;   /* drobne etykiety: jasne złoto ma za mały kontrast */
   --akcent-jasny:#C9A86A;
   --max:1180px;
   --serif:"Bodoni Moda",Georgia,serif;
@@ -150,7 +151,8 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
 /* ===================== SEKCJE ===================== */
 .sekcja{padding:clamp(74px,9.5vw,124px) 0;position:relative}
 .sekcja--ciemna{background:var(--tlo-2)}
-.etykieta{margin:0 0 16px;font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--akcent)}
+.etykieta{margin:0 0 16px;font-size:12px;font-weight:500;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--akcent-ciemny)}
 .tytul{font-size:clamp(32px,5vw,56px);margin:0 0 22px;letter-spacing:-.012em}
 .tytul__kursywa{font-style:italic;color:var(--akcent)}
 .wstep{max-width:62ch;color:var(--przygas);margin:0 0 clamp(36px,5vw,56px);font-size:17px}
@@ -160,9 +162,9 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
 .oferta__grupa{display:grid;grid-template-columns:minmax(170px,236px) 1fr;
   gap:clamp(20px,4vw,56px);padding:clamp(30px,3.4vw,44px) 0;
   border-bottom:1px solid var(--linia-mocna)}
-.oferta__nazwa{font-family:var(--sans);font-weight:400;font-size:11.5px;
-  letter-spacing:.24em;text-transform:uppercase;color:var(--akcent);
-  line-height:1.9;margin:0}
+.oferta__nazwa{font-family:var(--sans);font-weight:500;font-size:13px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--akcent-ciemny);
+  line-height:1.65;margin:0}
 .oferta__poz{display:grid;grid-template-columns:repeat(2,1fr);
   column-gap:clamp(24px,3.4vw,52px)}
 .zabieg{padding:0 0 22px}
@@ -170,10 +172,12 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
 .oferta__poz .zabieg:nth-child(2){border-top:0;padding-top:0}
 .oferta__poz .zabieg:last-child{padding-bottom:0}
 .oferta__poz .zabieg:nth-last-child(2):nth-child(odd){padding-bottom:0}
-.zabieg h4{font-family:var(--serif);font-weight:400;
-  font-size:clamp(19px,1.9vw,22px);line-height:1.25;margin:0 0 6px;transition:color .35s}
-.zabieg p{margin:0;font-size:15px;line-height:1.6;color:var(--przygas);max-width:44ch}
-.zabieg:hover h4{color:var(--akcent)}
+.zabieg h4{font-family:var(--sans);font-weight:500;
+  font-size:clamp(17px,1.55vw,19px);line-height:1.35;letter-spacing:-.005em;
+  margin:0 0 7px;color:var(--tekst);transition:color .35s}
+.zabieg p{margin:0;font-size:15.5px;font-weight:400;line-height:1.62;
+  color:#6B5C53;max-width:44ch}
+.zabieg:hover h4{color:var(--akcent-ciemny)}
 
 .voucher{margin-top:clamp(34px,4vw,48px);padding:28px 30px;border-radius:18px;display:flex;flex-wrap:wrap;gap:20px;
   align-items:center;justify-content:space-between;
@@ -260,8 +264,8 @@ body.zablokowane{overflow:hidden}
   box-shadow:inset 0 0 0 1px rgba(84,69,64,.14)}
 .omnie__tekst p{color:var(--przygas);max-width:56ch}
 .omnie__tekst strong{font-weight:500;color:var(--tekst)}
-.lista__nad{margin:26px 0 12px!important;font-size:11px;letter-spacing:.26em;
-  text-transform:uppercase;color:var(--akcent)}
+.lista__nad{margin:26px 0 12px!important;font-size:12px;letter-spacing:.26em;
+  text-transform:uppercase;font-weight:500;color:var(--akcent-ciemny)}
 .lista{list-style:none;margin:0 0 32px;padding:0;display:grid;gap:11px}
 .lista li{position:relative;padding-left:26px;font-size:15.5px;color:var(--tekst)}
 .lista li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:1px;background:var(--akcent)}
@@ -286,13 +290,14 @@ body.zablokowane{overflow:hidden}
   background:var(--karta);box-shadow:var(--cien)}
 .dane{margin:0 0 28px;display:grid;gap:18px}
 .dane div{display:grid;gap:3px}
-.dane dt{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--akcent)}
+.dane dt{font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--akcent-ciemny)}
 .dane dd{margin:0;font-size:16px;line-height:1.5}
 .dane a{text-decoration:none;transition:color .3s}
 .dane a:hover{color:var(--akcent)}
 .godziny{width:100%;border-collapse:collapse;font-size:15px}
-.godziny caption{text-align:left;font-size:11px;letter-spacing:.24em;text-transform:uppercase;
-  color:var(--akcent);padding-bottom:12px}
+.godziny caption{text-align:left;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--akcent-ciemny);padding-bottom:12px}
 .godziny th,.godziny td{padding:9px 0;border-top:1px solid var(--linia);text-align:left;font-weight:300}
 .godziny td{text-align:right;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
 .godziny th{color:var(--przygas)}
