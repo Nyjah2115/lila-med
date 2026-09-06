@@ -24,19 +24,19 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 body{
   margin:0;background:var(--tlo);color:var(--tekst);
-  font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.65;
+  font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.65;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
-h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
+h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
   font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,5vw,40px)}
 
 /* ---- przyciski ---- */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.5em;
-  font-family:var(--sans);font-weight:400;letter-spacing:.06em;text-transform:uppercase;
+  font-family:var(--sans);font-weight:500;letter-spacing:.06em;text-transform:uppercase;
   font-size:12.5px;text-decoration:none;border-radius:999px;
   padding:.86em 1.7em;border:1px solid transparent;cursor:pointer;white-space:nowrap;
   transition:transform .35s cubic-bezier(.2,.8,.2,1),background .35s,color .35s,border-color .35s;
@@ -62,7 +62,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
 .nav__inner{max-width:var(--max);margin:0 auto;padding:14px clamp(20px,5vw,40px);
   display:flex;align-items:center;justify-content:space-between;gap:18px}
 .nav__logo{display:flex;align-items:center;gap:11px;text-decoration:none}
-.nav__nazwa{font-family:var(--serif);font-size:19px;letter-spacing:.18em;color:var(--tekst)}
+.nav__nazwa{font-family:var(--serif);font-weight:500;font-size:19px;letter-spacing:.18em;color:var(--tekst)}
 .nav__nazwa b{font-weight:400;color:var(--akcent)}
 .nav__menu{display:flex;align-items:center;gap:clamp(16px,2.4vw,30px)}
 .nav__menu a{text-decoration:none;font-size:14px;letter-spacing:.05em;color:var(--przygas);
@@ -123,7 +123,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
   color:#6A5A50;line-height:1.72}
 .hero__cta{display:flex;flex-wrap:wrap;gap:13px}
 .hero__ocena{display:flex;align-items:center;gap:10px;margin:30px 0 0;font-size:14px;color:var(--przygas)}
-.hero__ocena strong{font-family:var(--serif);font-size:19px;font-weight:400;color:var(--tekst);
+.hero__ocena strong{font-family:var(--serif);font-size:19px;font-weight:500;color:var(--tekst);
   font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
 .hero__gwiazdki{color:var(--akcent);letter-spacing:.1em;font-size:13px}
 
@@ -145,7 +145,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
 .pasek__el strong{font-weight:500;font-size:15px;color:var(--tekst)}
 .pasek__el span{font-size:13px;color:var(--przygas)}
 .pasek__ocena{display:flex;align-items:baseline;gap:9px;font-family:var(--serif);font-size:22px!important;
-  font-weight:400!important;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+  font-weight:500!important;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
 .pasek__gwiazdki{font-size:12px;letter-spacing:.12em;color:var(--akcent);font-family:var(--sans)}
 
 /* ===================== SEKCJE ===================== */
@@ -162,7 +162,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
 .oferta__grupa{display:grid;grid-template-columns:minmax(170px,236px) 1fr;
   gap:clamp(20px,4vw,56px);padding:clamp(30px,3.4vw,44px) 0;
   border-bottom:1px solid var(--linia-mocna)}
-.oferta__nazwa{font-family:var(--sans);font-weight:500;font-size:13px;
+.oferta__nazwa{font-family:var(--sans);font-weight:600;font-size:13px;
   letter-spacing:.14em;text-transform:uppercase;color:var(--akcent-ciemny);
   line-height:1.65;margin:0}
 .oferta__poz{display:grid;grid-template-columns:repeat(2,1fr);
@@ -172,7 +172,7 @@ h1,h2,h3{font-family:var(--serif);font-weight:400;line-height:1.08;margin:0;
 .oferta__poz .zabieg:nth-child(2){border-top:0;padding-top:0}
 .oferta__poz .zabieg:last-child{padding-bottom:0}
 .oferta__poz .zabieg:nth-last-child(2):nth-child(odd){padding-bottom:0}
-.zabieg h4{font-family:var(--sans);font-weight:500;
+.zabieg h4{font-family:var(--sans);font-weight:600;
   font-size:clamp(17px,1.55vw,19px);line-height:1.35;letter-spacing:-.005em;
   margin:0 0 7px;color:var(--tekst);transition:color .35s}
 .zabieg p{margin:0;font-size:15.5px;font-weight:400;line-height:1.62;
@@ -298,7 +298,7 @@ body.zablokowane{overflow:hidden}
 .godziny{width:100%;border-collapse:collapse;font-size:15px}
 .godziny caption{text-align:left;font-size:12px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
   color:var(--akcent-ciemny);padding-bottom:12px}
-.godziny th,.godziny td{padding:9px 0;border-top:1px solid var(--linia);text-align:left;font-weight:300}
+.godziny th,.godziny td{padding:9px 0;border-top:1px solid var(--linia);text-align:left;font-weight:400}
 .godziny td{text-align:right;font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
 .godziny th{color:var(--przygas)}
 .godziny__zamk{color:var(--przygas);opacity:.7}
