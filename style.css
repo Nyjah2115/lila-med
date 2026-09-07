@@ -26,7 +26,12 @@ body{
   margin:0;background:var(--tlo);color:var(--tekst);
   font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.65;
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  /* tekstu nie da się zaznaczyć; -webkit-touch-callout ucina też menu
+     „kopiuj / zapisz obrazek” po długim przytrzymaniu na iOS */
+  -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+  -webkit-touch-callout:none;
 }
+img{-webkit-user-drag:none;user-drag:none}
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
