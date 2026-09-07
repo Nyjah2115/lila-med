@@ -15,7 +15,7 @@
   --akcent-ciemny:#7A5B24;   /* drobne etykiety: jasne złoto ma za mały kontrast */
   --akcent-jasny:#C9A86A;
   --max:1180px;
-  --serif:"Bodoni Moda",Georgia,serif;
+  --serif:"Fraunces",Georgia,serif;
   --sans:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
   --cien:0 24px 60px -32px rgba(84,69,64,.35);
 }
@@ -30,7 +30,10 @@ body{
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
-  font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
+  font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;
+  /* Fraunces przy dużych stopniach sam podbija kontrast kresek — a właśnie tego
+     unikamy, więc rozmiar optyczny jest przypięty na niski, „tekstowy" */
+  font-optical-sizing:none}
 .wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,5vw,40px)}
 
 /* ---- przyciski ---- */
