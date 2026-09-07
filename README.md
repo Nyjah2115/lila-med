@@ -108,6 +108,10 @@ w `.hero__tlo img`.
 
 ## Narzędzia (`tools/`)
 
+- `kroje.html` — ten sam nagłówek złożony kilkoma krojami, w rozmiarach ze strony.
+  Otwórz `http://localhost:8919/tools/kroje.html`. Powstał, bo podmienianie `--serif`
+  w locie i kadrowanie zrzutu jest zawodne: różne kroje mają różne metryki, więc
+  po podmianie treść przesuwa się w pionie i kadr łapie co innego w każdym wariancie.
 - `podglad.swift` → `podglad` — zrzuty ekranu strony przez WKWebView:
 
       ./tools/podglad <url> <plik.png> <szer> <wys> <scrollY> <opóźnienie> [dodatkowyJS] [wyrażenieDoWypisania]
