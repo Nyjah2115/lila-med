@@ -325,13 +325,6 @@ body.zablokowane{overflow:hidden}
   scrollbar-width:none;-ms-overflow-style:none;
   padding:6px;margin:-6px;scroll-padding:6px}
 .opinie__pas::-webkit-scrollbar{display:none}
-/* Karta przy prawej krawędzi była ucinana w pół słowa. Zamiast twardego cięcia
-   pasek wygasza się przy brzegach — nadal widać, że treść idzie dalej. */
-.opinie__pas{
-  -webkit-mask-image:linear-gradient(to right,
-    transparent 0, #000 34px, #000 calc(100% - 120px), transparent 100%);
-  mask-image:linear-gradient(to right,
-    transparent 0, #000 34px, #000 calc(100% - 120px), transparent 100%)}
 .opinia{scroll-snap-align:start;margin:0;padding:30px 28px;border-radius:18px;
   display:flex;flex-direction:column;
   border:1px solid var(--linia);background:var(--karta);
@@ -472,15 +465,12 @@ body.zablokowane{overflow:hidden}
 }
 @media (max-width:640px){
   body{font-size:16px}
-  /* na telefonie jedna opinia na ekran, przesuwana palcem — strzałki zbędne */
-  .opinie__pas{grid-auto-columns:84vw;gap:12px;
-    /* na wąskim ekranie 120 px wygaszenia zjadałoby jedną trzecią karty */
-    -webkit-mask-image:linear-gradient(to right,
-      #000 0, #000 calc(100% - 54px), transparent 100%);
-    mask-image:linear-gradient(to right,
-      #000 0, #000 calc(100% - 54px), transparent 100%)}
-  .opinie__strzalka{display:none}
-  .opinie__sterowanie{justify-content:center;margin-top:20px}
+  /* karta zajmuje całą szerokość ekranu, więc bez strzałek nie byłoby wiadomo,
+     że opinii jest więcej niż ta jedna */
+  .opinie__pas{gap:12px}
+  .opinie__strzalka{display:grid;width:42px;height:42px}
+  .opinie__strzalka svg{width:17px;height:17px}
+  .opinie__sterowanie{justify-content:center;flex-wrap:wrap;gap:12px 14px;margin-top:20px}
   .opinie__link{margin:0;font-size:14.5px}
   .stopka__gora{flex-direction:column;text-align:center}
   .stopka__kontakt{text-align:center}

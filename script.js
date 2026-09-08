@@ -207,6 +207,18 @@ przyScrollu();
   karty.forEach(function(k){ k.classList.add("widac"); k.style.transitionDelay = "0s"; });
 
   var zestaw = 0;
+  var ODSTEP = 18;
+
+  /* Szerokość kart liczona tak, żeby w pasku mieściła się DOKŁADNA ich liczba —
+     bez wystającego kawałka, którego trzeba by wygaszać maską. */
+  function dopasujSzerokosc(){
+    var dostepne = pas.clientWidth;
+    var odstep = window.matchMedia("(max-width: 640px)").matches ? 12 : ODSTEP;
+    var ile = Math.max(1, Math.min(4, Math.floor(dostepne / 340)));
+    var szer = (dostepne - odstep * (ile - 1)) / ile;
+    pas.style.gridAutoColumns = szer + "px";
+    return odstep;
+  }
 
   function skok(x){
     var b = pas.style.scrollBehavior;
@@ -217,6 +229,7 @@ przyScrollu();
 
   function zbuduj(){
     [].slice.call(pas.querySelectorAll(".opinia--kopia")).forEach(function(k){ k.remove(); });
+    dopasujSzerokosc();
     for(var i = 0; i < 2; i++){
       karty.forEach(function(k){
         var kl = k.cloneNode(true);
@@ -240,7 +253,8 @@ przyScrollu();
   }
 
   function przesun(kier){
-    var krok = karty[0].offsetWidth + 18;
+    var odstep = window.matchMedia("(max-width: 640px)").matches ? 12 : ODSTEP;
+    var krok = karty[0].offsetWidth + odstep;
     pas.scrollBy({left: kier * krok, behavior: "smooth"});
   }
 
