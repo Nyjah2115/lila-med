@@ -495,8 +495,17 @@ body.zablokowane{overflow:hidden}
   .pas{min-height:0;display:block}
   .pas__foto{position:relative;height:52vw;max-height:300px;object-position:center 6%}
   .pas__zaslona,.pas__ziarno{inset:0 0 auto 0;height:52vw;max-height:300px}
-  .pas__zaslona{background:linear-gradient(to bottom, rgba(251,247,242,0) 42%,
-    rgba(251,247,242,.55) 76%, rgba(251,247,242,.94) 93%, var(--tlo) 100%)}
+  /* Zdjęcie wygasza się na OBU krawędziach. Wcześniej góra była ucięta ostro,
+     a dół schodził do var(--tlo), czyli o odcień jaśniej niż tło pasa —
+     zostawała cienka krecha. Góra idzie do koloru sekcji wyżej, dół do tła pasa. */
+  .pas__zaslona{background:linear-gradient(to bottom,
+    var(--tlo) 0%,
+    rgba(251,247,242,.70) 6%,
+    rgba(251,247,242,0) 22%,
+    rgba(238,227,214,0) 46%,
+    rgba(238,227,214,.55) 76%,
+    rgba(238,227,214,.94) 93%,
+    var(--tlo-3) 100%)}
   .pas__tresc{padding-top:0;padding-bottom:clamp(40px,8vw,60px);margin-top:-18px}
   /* cztery informacje jedna pod drugą zajmowały pół ekranu — na telefonie 2x2 */
   .pasek__inner{grid-template-columns:repeat(2,1fr);gap:20px 14px;padding-block:22px}
