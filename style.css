@@ -481,6 +481,20 @@ body.zablokowane{overflow:hidden}
 }
 @media (max-width:640px){
   body{font-size:16px}
+
+  /* ---- środkowanie na telefonie ----
+     Środkuję to, co narracyjne: etykiety, nagłówki, akapity wprowadzające
+     i przyciski. Listy, cennikowe wiersze i cytaty zostają do lewej — tam
+     wyśrodkowanie rozbija rytm czytania. */
+  .etykieta,.tytul,.wstep,.hero__tresc,.pas__tresc,.omnie__tekst,.kontakt__lewo{
+    text-align:center}
+  .hero__nad,.hero__cta,.hero__ocena,.kontakt__cta{justify-content:center}
+  .hero__lead,.wstep,.pas__lead,.omnie__tekst p{margin-left:auto;margin-right:auto}
+  .galeria__link{text-align:center}
+  .voucher{align-items:center;text-align:center}
+  /* lista specjalizacji zostaje wyrównana do lewej, ale jako blok siedzi
+     na środku — inaczej kreski przed pozycjami rozjeżdżają się na boki */
+  .lista{width:max-content;max-width:100%;margin-inline:auto;text-align:left}
   /* karta zajmuje całą szerokość ekranu, więc bez strzałek nie byłoby wiadomo,
      że opinii jest więcej niż ta jedna */
   .opinie__pas{gap:12px}
@@ -493,8 +507,11 @@ body.zablokowane{overflow:hidden}
   .stopka__kontakt a{justify-self:center}
   .stopka__dol{justify-content:center;text-align:center}
   .pas{min-height:0;display:block}
-  .pas__foto{position:relative;height:52vw;max-height:300px;object-position:center 6%}
-  .pas__zaslona,.pas__ziarno{inset:0 0 auto 0;height:52vw;max-height:300px}
+  /* wysokość z proporcji samego zdjęcia — przy stałej wysokości cover ucinał
+     30% kadru i usta lądowały przy krawędzi */
+  .pas__foto{position:relative;width:100%;height:auto;aspect-ratio:738/588;
+    object-fit:cover;object-position:center}
+  .pas__zaslona,.pas__ziarno{inset:0 0 auto 0;width:100%;height:auto;aspect-ratio:738/588}
   /* Zdjęcie wygasza się na OBU krawędziach. Wcześniej góra była ucięta ostro,
      a dół schodził do var(--tlo), czyli o odcień jaśniej niż tło pasa —
      zostawała cienka krecha. Góra idzie do koloru sekcji wyżej, dół do tła pasa. */
