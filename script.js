@@ -19,6 +19,30 @@ function przeliczWidocznosc(){
   }
 }
 
+/* ---------- ekran ładowania ----------
+   Schodzi, gdy strona się wczyta, ale nie wcześniej niż po chwili, żeby nie
+   mrugnął na ułamek sekundy. Bezpiecznik zdejmuje go i tak — ekran ładowania,
+   który zostanie na wierzchu, to strona nie do użycia. */
+(function(){
+  var ekran = document.getElementById("ladowanie");
+  if(!ekran) return;
+  var zeszlo = false;
+  function zejdz(){
+    if(zeszlo) return;
+    zeszlo = true;
+    ekran.classList.add("zeszlo");
+    setTimeout(function(){ ekran.remove(); }, 700);
+  }
+  var start = Date.now();
+  function gotowe(){
+    var minimum = 650;                       /* żeby nie mrugnęło */
+    setTimeout(zejdz, Math.max(0, minimum - (Date.now() - start)));
+  }
+  if(document.readyState === "complete") gotowe();
+  else window.addEventListener("load", gotowe);
+  setTimeout(zejdz, 4000);                   /* bezpiecznik */
+})();
+
 /* ---------- nawigacja ---------- */
 var nav = document.getElementById("nav");
 var burger = document.getElementById("burger");

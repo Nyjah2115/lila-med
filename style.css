@@ -59,6 +59,31 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
 .btn--obrys{border-color:var(--linia-mocna);color:var(--tekst);background:rgba(255,255,255,.5)}
 .btn--obrys:hover{border-color:var(--braz);color:var(--braz);background:#fff;transform:translateY(-2px)}
 
+/* ===================== EKRAN ŁADOWANIA =====================
+   Logo na brązowym tle, tym samym co w stopce. Znika przez dodanie klasy,
+   nie przez animację — gdyby animacje stanęły, ekran i tak zejdzie. */
+.ladowanie{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:30px;background:var(--braz);
+  transition:opacity .6s ease,visibility .6s}
+.ladowanie__logo{width:min(230px,54vw);height:auto;
+  animation:logoWchodzi 1.1s cubic-bezier(.2,.8,.2,1) both}
+/* bez opacity w animacji — zamrożona zostawiała logo przygaszone */
+@keyframes logoWchodzi{from{transform:translateY(12px) scale(.97)}to{transform:none}}
+.ladowanie__pasek{display:block;width:min(150px,38vw);height:2px;border-radius:2px;
+  background:rgba(227,199,159,.24);overflow:hidden}
+.ladowanie__pasek i{display:block;width:40%;height:100%;border-radius:2px;
+  background:var(--stopka-zloto,#E3C79F);
+  animation:paskoLadowania 1.15s ease-in-out infinite}
+@keyframes paskoLadowania{
+  0%{transform:translateX(-110%)} 100%{transform:translateX(320%)}}
+.ladowanie.zeszlo{opacity:0;visibility:hidden;pointer-events:none}
+/* nie zasłaniaj strony, gdy ktoś woli mniej ruchu albo skrypt nie wystartuje */
+.no-js .ladowanie{display:none}
+@media (prefers-reduced-motion:reduce){
+  .ladowanie__logo{animation:none}
+  .ladowanie__pasek i{animation:none;width:100%}
+}
+
 /* ===================== NAWIGACJA ===================== */
 .nav{position:fixed;inset:0 0 auto 0;z-index:60;border-bottom:1px solid transparent;
   transition:background .4s,backdrop-filter .4s,border-color .4s,box-shadow .4s}
