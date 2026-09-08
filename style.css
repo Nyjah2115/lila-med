@@ -1,5 +1,9 @@
 /* ===== LILA MED — Kielce (jasna wersja) ===== */
 :root{
+  /* Strona jest jasna i tylko jasna. Bez tej deklaracji Chrome na Androidzie
+     i Samsung Internet potrafią same przyciemnić stronę swoim algorytmem,
+     przez co kolory na telefonie wyglądają zupełnie inaczej niż na komputerze. */
+  color-scheme:light;
   /* kolory wzięte z logo: brąz tła i złoto liter */
   --tlo:#FBF7F2;
   --tlo-2:#F4EBE1;
