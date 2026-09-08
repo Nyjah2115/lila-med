@@ -142,13 +142,15 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
   font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
 .hero__gwiazdki{color:var(--akcent);letter-spacing:.1em;font-size:13px}
 
-.hero__podpis{position:absolute;right:clamp(20px,5vw,40px);bottom:34px;z-index:3;margin:0;
-  display:flex;flex-direction:column;gap:1px;padding:11px 18px;border-radius:14px;
-  background:rgba(255,255,255,.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-  font-family:var(--serif);font-size:17px;color:var(--tekst);
-  box-shadow:0 12px 30px -20px rgba(84,69,64,.8)}
-.hero__podpis span{font-family:var(--sans);font-size:11px;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--przygas)}
+/* podpis ma być notatką na zdjęciu, nie drugim przyciskiem — mniejszy rozmiar,
+   lżejsze tło, bez cienia */
+.hero__podpis{position:absolute;right:clamp(20px,5vw,40px);bottom:30px;z-index:3;margin:0;
+  display:flex;flex-direction:column;gap:1px;padding:7px 13px;border-radius:9px;
+  background:rgba(255,255,255,.34);backdrop-filter:blur(9px) saturate(1.1);
+  -webkit-backdrop-filter:blur(9px) saturate(1.1);
+  font-family:var(--serif);font-size:14px;color:var(--tekst);opacity:.9}
+.hero__podpis span{font-family:var(--sans);font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:#6A5A50}
 
 /* ===================== PASEK ===================== */
 .pasek{background:var(--karta);border-block:1px solid var(--linia)}
@@ -486,10 +488,10 @@ body.zablokowane{overflow:hidden}
      Środkuję to, co narracyjne: etykiety, nagłówki, akapity wprowadzające
      i przyciski. Listy, cennikowe wiersze i cytaty zostają do lewej — tam
      wyśrodkowanie rozbija rytm czytania. */
-  .etykieta,.tytul,.wstep,.hero__tresc,.pas__tresc,.omnie__tekst,.kontakt__lewo{
+  .etykieta,.tytul,.wstep,.hero__tresc,.omnie__tekst,.kontakt__lewo{
     text-align:center}
   .hero__nad,.hero__cta,.hero__ocena,.kontakt__cta{justify-content:center}
-  .hero__lead,.wstep,.pas__lead,.omnie__tekst p{margin-left:auto;margin-right:auto}
+  .hero__lead,.wstep,.omnie__tekst p{margin-left:auto;margin-right:auto}
   .galeria__link{text-align:center}
   .voucher{align-items:center;text-align:center}
   /* lista specjalizacji zostaje wyrównana do lewej, ale jako blok siedzi
@@ -506,11 +508,8 @@ body.zablokowane{overflow:hidden}
   .stopka__kontakt{text-align:center}
   .stopka__kontakt a{justify-self:center}
   .stopka__dol{justify-content:center;text-align:center}
-  /* Na telefonie zdjęcie ust wypada — zostaje sama treść sekcji.
-     Kadr i tak był tam najsłabszym elementem, a sekcja bez niego jest czytelniejsza. */
-  .pas{min-height:0;display:block}
-  .pas__foto,.pas__zaslona,.pas__ziarno{display:none}
-  .pas__tresc{margin-top:0;padding-block:clamp(48px,10vw,72px)}
+  /* Cała sekcja o rewitalizacji ust znika na telefonie — na desktopie zostaje. */
+  .pas{display:none}
   /* cztery informacje jedna pod drugą zajmowały pół ekranu — na telefonie 2x2 */
   .pasek__inner{grid-template-columns:repeat(2,1fr);gap:20px 14px;padding-block:22px}
   .pasek__el{padding-left:12px}
