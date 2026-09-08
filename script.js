@@ -80,7 +80,7 @@ przyScrollu();
   var zamknij = document.getElementById("lupaZamknij");
   var wstecz  = document.getElementById("lupaWstecz");
   var dalej   = document.getElementById("lupaDalej");
-  var kafle   = [].slice.call(document.querySelectorAll(".galeria__el"));
+  var kafle   = [].slice.call(document.querySelectorAll(".karuzela__el"));
   if(!kafle.length) return;
 
   var teraz = 0, ostatnioKliknięty = null;
@@ -120,12 +120,9 @@ przyScrollu();
     if(ostatnioKliknięty) ostatnioKliknięty.focus();
   }
 
-  kafle.forEach(function(el, i){
-    el.addEventListener("click", function(){ otworz(i, el); });
-    el.addEventListener("keydown", function(e){
-      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); otworz(i, el); }
-    });
-  });
+  /* karuzela sama decyduje, kiedy otworzyć powiększenie: klik w boczny kadr
+     tylko go wyśrodkowuje, dopiero klik w środkowy powiększa */
+  window.__lupaOtworz = function(i){ otworz(i, kafle[i]); };
 
   zamknij.addEventListener("click", zamknijLupe);
   wstecz.addEventListener("click", function(){ pokaz(teraz - 1); });
@@ -267,6 +264,121 @@ przyScrollu();
     clearTimeout(czekaj); czekaj = setTimeout(zbuduj, 200);
   });
   zbuduj();
+})();
+
+/* ---------- galeria efektów: karuzela 3D ----------
+   Środkowy kadr z przodu, sąsiednie odsunięte i obrócone w perspektywie.
+   Pozycje ustawiam w stylach inline, czyli jako STAN — gdy przejścia stoją,
+   slajdy i tak lądują tam, gdzie mają być. */
+(function(){
+  var scena = document.getElementById("karuzelaScena");
+  if(!scena) return;
+  var obudowa = scena.closest(".karuzela");
+  var karty   = [].slice.call(scena.querySelectorAll(".karuzela__el"));
+  var kropki  = document.getElementById("karuzelaKropki");
+  var lewo    = obudowa.querySelector(".karuzela__strzalka--lewo");
+  var prawo   = obudowa.querySelector(".karuzela__strzalka--prawo");
+  if(karty.length < 2) return;
+
+  var ile = karty.length, teraz = 0, stoi = false, zegar = null;
+
+  karty.forEach(function(k, i){
+    var kropka = document.createElement("button");
+    kropka.type = "button"; kropka.className = "karuzela__kropka";
+    kropka.setAttribute("aria-label", "Zdjęcie " + (i+1));
+    kropka.addEventListener("click", function(){ idzDo(i); });
+    kropki.appendChild(kropka);
+  });
+
+  /* Scena musi być tak wysoka jak najwyższa karta — przy stałej wartości z CSS
+     albo zostawała pusta przestrzeń, albo sterowanie uciekało poza sekcję. */
+  function dopasujWysokosc(){
+    var max = 0;
+    karty.forEach(function(k){ max = Math.max(max, k.offsetHeight); });
+    if(max) scena.style.minHeight = Math.round(max + 26) + "px";
+  }
+
+  function ustaw(odRazu){
+    /* Pierwsze ułożenie bez przejścia: inaczej slajdy dochodzą na miejsce
+       animacją, a gdy ta stoi, wszystkie zostają na kupie na środku. */
+    if(odRazu) karty.forEach(function(k){ k.style.transition = "none"; });
+    dopasujWysokosc();
+    var szer = karty[0].getBoundingClientRect().width || 300;
+    var bok  = szer * 0.78;                 /* odsunięcie sąsiada */
+    karty.forEach(function(k, i){
+      var d = (i - teraz + ile) % ile;
+      if(d > ile / 2) d -= ile;             /* -1 to sąsiad z lewej */
+      var t, o, z, f;
+      if(d === 0){
+        t = "translateX(0) scale(1) rotateY(0deg)"; o = 1; z = 30; f = "none";
+        k.classList.add("karuzela__el--srodek");
+      } else {
+        var znak = d > 0 ? 1 : -1;
+        var krok = Math.min(Math.abs(d), 2);
+        t = "translateX(" + (znak * bok * krok) + "px) scale(" + (krok === 1 ? .82 : .68) + ") " +
+            "rotateY(" + (-znak * (krok === 1 ? 26 : 38)) + "deg)";
+        o = krok === 1 ? .78 : .45; z = 20 - krok; f = "none";
+        k.classList.remove("karuzela__el--srodek");
+      }
+      k.style.transform = t;
+      k.style.opacity   = o;
+      k.style.zIndex    = z;
+      k.style.filter    = f;
+      k.style.boxShadow = d === 0 ? "0 30px 70px -34px rgba(84,69,64,.85)"
+                                  : "0 16px 40px -30px rgba(84,69,64,.7)";
+      k.setAttribute("aria-hidden", d === 0 ? "false" : "true");
+    });
+    [].slice.call(kropki.children).forEach(function(k, i){
+      k.classList.toggle("aktywna", i === teraz);
+    });
+    if(odRazu){
+      void scena.offsetWidth;                       /* wymuszony reflow */
+      karty.forEach(function(k){ k.style.transition = ""; });
+    }
+  }
+
+  function idzDo(i){ teraz = (i + ile) % ile; ustaw(); odlicz(); }
+  function dalej(){ idzDo(teraz + 1); }
+  function wstecz(){ idzDo(teraz - 1); }
+
+  function odlicz(){
+    clearTimeout(zegar);
+    if(stoi || document.hidden) return;
+    zegar = setTimeout(function(){ idzDo(teraz + 1); }, 6000);
+  }
+
+  karty.forEach(function(k, i){
+    k.addEventListener("click", function(){
+      if(i !== teraz) idzDo(i);                 /* boczny kadr — wysuń na środek */
+      else if(window.__lupaOtworz) window.__lupaOtworz(i);
+    });
+    k.addEventListener("keydown", function(e){
+      if(e.key === "Enter" || e.key === " "){ e.preventDefault(); k.click(); }
+    });
+  });
+
+  lewo.addEventListener("click", wstecz);
+  prawo.addEventListener("click", dalej);
+  obudowa.addEventListener("mouseenter", function(){ stoi = true; clearTimeout(zegar); });
+  obudowa.addEventListener("mouseleave", function(){ stoi = false; odlicz(); });
+
+  var x0 = null;
+  scena.addEventListener("touchstart", function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+  scena.addEventListener("touchend", function(e){
+    if(x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if(Math.abs(dx) > 45){ dx < 0 ? dalej() : wstecz(); }
+    x0 = null;
+  }, {passive:true});
+
+  window.addEventListener("resize", function(){ ustaw(true); });
+  widocznosc(obudowa, 0, function(jest){ stoi = !jest; jest ? odlicz() : clearTimeout(zegar); });
+  ustaw(true);
+  /* zdjęcia doczytują się leniwie, więc wysokość przeliczam też po ich załadowaniu */
+  karty.forEach(function(k){
+    var i = k.querySelector("img");
+    if(i && !i.complete) i.addEventListener("load", function(){ ustaw(true); });
+  });
 })();
 
 })();

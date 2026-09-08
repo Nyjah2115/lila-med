@@ -187,19 +187,26 @@
     <h2 class="tytul reveal">Zdjęcia z&nbsp;gabinetu<br><span class="tytul__kursywa">przed zabiegiem i&nbsp;po</span></h2>
     <p class="wstep reveal">Efekt zawsze zależy od&nbsp;skóry, wieku i&nbsp;liczby zabiegów w&nbsp;serii — te kadry pokazują kierunek, nie&nbsp;gwarancję.</p>
 
-    <div class="galeria">
-      <figure class="galeria__el reveal" tabindex="0" role="button" aria-label="Powiększ zdjęcie">
-        <img src="img/efekt-szyja.jpg" alt="Skóra szyi na kolejnych etapach terapii" loading="lazy" width="1660" height="1652">
-        <figcaption>Szyja — kolejne etapy terapii</figcaption>
-      </figure>
-      <figure class="galeria__el reveal" tabindex="0" role="button" aria-label="Powiększ zdjęcie">
-        <img src="img/efekt-ramie.jpg" alt="Ramię przed zabiegiem i po zabiegu" loading="lazy" width="1272" height="1508">
-        <figcaption>Ramię — przed i&nbsp;po</figcaption>
-      </figure>
-      <figure class="galeria__el reveal" tabindex="0" role="button" aria-label="Powiększ zdjęcie">
-        <img src="img/efekt-czolo.jpg" alt="Zmarszczki na czole przed zabiegiem i po zabiegu" loading="lazy" width="1704" height="1088">
-        <figcaption>Czoło — przed i&nbsp;po</figcaption>
-      </figure>
+    <div class="karuzela" id="karuzela">
+      <div class="karuzela__scena" id="karuzelaScena">
+        <figure class="karuzela__el" tabindex="0" role="button" aria-label="Powiększ zdjęcie">
+          <img src="img/efekt-szyja.jpg" alt="Skóra szyi na kolejnych etapach terapii" loading="lazy" width="1660" height="1652">
+          <figcaption>Szyja — kolejne etapy terapii</figcaption>
+        </figure>
+        <figure class="karuzela__el" tabindex="0" role="button" aria-label="Powiększ zdjęcie">
+          <img src="img/efekt-ramie.jpg" alt="Ramię przed zabiegiem i po zabiegu" loading="lazy" width="1272" height="1508">
+          <figcaption>Ramię — przed i&nbsp;po</figcaption>
+        </figure>
+        <figure class="karuzela__el" tabindex="0" role="button" aria-label="Powiększ zdjęcie">
+          <img src="img/efekt-czolo.jpg" alt="Zmarszczki na czole przed zabiegiem i po zabiegu" loading="lazy" width="1704" height="1088">
+          <figcaption>Czoło — przed i&nbsp;po</figcaption>
+        </figure>
+      </div>
+      <div class="karuzela__sterowanie">
+        <button class="karuzela__strzalka karuzela__strzalka--lewo" type="button" aria-label="Poprzednie zdjęcie"><svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" focusable="false"><path d="M15 4.5 7.5 12 15 19.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="karuzela__strzalka karuzela__strzalka--prawo" type="button" aria-label="Następne zdjęcie"><svg viewBox="0 0 24 24" width="19" height="19" aria-hidden="true" focusable="false"><path d="M15 4.5 7.5 12 15 19.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="karuzela__kropki" id="karuzelaKropki" aria-hidden="true"></div>
+      </div>
     </div>
 
     <p class="galeria__link reveal">Więcej kadrów i&nbsp;filmów z&nbsp;zabiegów jest na&nbsp;
