@@ -497,6 +497,15 @@ body.zablokowane{overflow:hidden}
   /* lista specjalizacji zostaje wyrównana do lewej, ale jako blok siedzi
      na środku — inaczej kreski przed pozycjami rozjeżdżają się na boki */
   .lista{width:max-content;max-width:100%;margin-inline:auto;text-align:left}
+  /* Na samej górze pasek nawigacji zasłania twarz na zdjęciu, więc pojawia się
+     dopiero po przewinięciu. Sterowane klasą, nie przejściem — gdyby animacje
+     stanęły, pasek i tak się pokaże; animowany jest wyłącznie zjazd. */
+  .nav:not(.jest-tlo){display:none}
+  .nav.jest-tlo{animation:pasekWjazd .35s cubic-bezier(.2,.8,.2,1)}
+  @keyframes pasekWjazd{from{transform:translateY(-100%)}to{transform:none}}
+  /* podpis pod zdjęciem powtarza to, co i tak jest w sekcji „O mnie" */
+  .hero__podpis{display:none}
+
   /* karta zajmuje całą szerokość ekranu, więc bez strzałek nie byłoby wiadomo,
      że opinii jest więcej niż ta jedna */
   .opinie__pas{gap:12px}
