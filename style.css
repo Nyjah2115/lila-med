@@ -347,6 +347,14 @@ body.zablokowane{overflow:hidden}
   color:#F5EADA;transform:translateY(-2px)}
 .opinie__strzalka:disabled{opacity:.3;cursor:default}
 
+.opinie__link{margin-left:auto;display:inline-flex;align-items:center;gap:8px;
+  font-size:14px;color:var(--akcent-ciemny);text-decoration:none;
+  padding-bottom:2px;border-bottom:1px solid rgba(122,91,36,.28);
+  transition:color .3s,border-color .3s}
+.opinie__link svg{width:15px;height:15px;transition:transform .3s}
+.opinie__link:hover{color:var(--braz);border-bottom-color:var(--braz)}
+.opinie__link:hover svg{transform:translateX(3px)}
+
 
 
 /* ---- kontakt ---- */
@@ -457,6 +465,8 @@ body.zablokowane{overflow:hidden}
   /* na telefonie jedna opinia na ekran, przesuwana palcem — strzałki zbędne */
   .opinie__pas{grid-auto-columns:84vw;gap:12px}
   .opinie__strzalka{display:none}
+  .opinie__sterowanie{justify-content:center;margin-top:20px}
+  .opinie__link{margin:0;font-size:14.5px}
   .stopka__gora{flex-direction:column;text-align:center}
   .stopka__kontakt{text-align:center}
   .stopka__kontakt a{justify-self:center}
