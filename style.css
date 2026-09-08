@@ -191,6 +191,35 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
   color:#6B5C53;max-width:44ch}
 .zabieg:hover h4{color:var(--akcent-ciemny)}
 
+/* ---- akordeon oferty ----
+   Grupy są zwinięte także na desktopie: nagłówek idzie wtedy pełną szerokością,
+   a pozycje rozwijają się pod nim w dwóch kolumnach. */
+.oferta__grupa.skladana{grid-template-columns:1fr;gap:0;padding:0}
+.oferta__grupa.skladana .oferta__nazwa{line-height:1.4}
+.oferta__grupa.skladana .oferta__przycisk{
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  padding:22px 40px 22px 0;position:relative;min-height:44px;
+  transition:color .3s}
+.oferta__grupa.skladana .oferta__przycisk:hover{color:var(--braz)}
+.oferta__grupa.skladana .oferta__licznik{
+  display:inline-grid;place-items:center;flex:none;
+  width:22px;height:22px;border-radius:50%;
+  background:rgba(160,124,60,.14);color:var(--akcent-ciemny);
+  font-size:11px;font-weight:600;letter-spacing:0}
+/* krzyżyk, który po rozwinięciu staje się minusem */
+.oferta__grupa.skladana .oferta__przycisk::before,
+.oferta__grupa.skladana .oferta__przycisk::after{
+  content:"";position:absolute;right:6px;top:50%;background:var(--akcent-ciemny);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .3s}
+.oferta__grupa.skladana .oferta__przycisk::before{width:15px;height:1.5px;margin-top:-.75px}
+.oferta__grupa.skladana .oferta__przycisk::after{width:1.5px;height:15px;margin-top:-7.5px;right:12.75px}
+.oferta__grupa.skladana.otwarta .oferta__przycisk::after{transform:rotate(90deg);opacity:0}
+.oferta__grupa.skladana .oferta__poz{display:none;padding-bottom:26px}
+/* Bez animowania przezroczystości: gdy animacje stoją (karta w tle, część
+   podglądów), treść zostałaby niewidoczna. Animowany jest tylko lekki zjazd. */
+.oferta__grupa.skladana.otwarta .oferta__poz{display:grid;animation:rozsuw .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes rozsuw{from{transform:translateY(-10px)}to{transform:none}}
+
 .voucher{margin-top:clamp(34px,4vw,48px);padding:28px 30px;border-radius:18px;display:flex;flex-wrap:wrap;gap:20px;
   align-items:center;justify-content:space-between;
   background:linear-gradient(120deg,#F2E7D5,#FCF5EC);border:1px solid var(--linia)}
@@ -398,30 +427,6 @@ body.zablokowane{overflow:hidden}
   .oferta__grupa{grid-template-columns:1fr;gap:16px}
   .oferta__nazwa{line-height:1.4}
 
-  /* akordeon — dopiero po kliknięciu w grupę pokazują się jej zabiegi */
-  .oferta__grupa.skladana{gap:0;padding:0}
-  .oferta__grupa.skladana .oferta__przycisk{
-    display:flex;align-items:center;gap:12px;cursor:pointer;
-    padding:20px 34px 20px 0;position:relative;min-height:44px}
-  .oferta__grupa.skladana .oferta__licznik{
-    display:inline-grid;place-items:center;flex:none;
-    width:22px;height:22px;border-radius:50%;
-    background:rgba(160,124,60,.14);color:var(--akcent-ciemny);
-    font-size:11px;font-weight:600;letter-spacing:0}
-  /* krzyżyk, który po rozwinięciu staje się minusem */
-  .oferta__grupa.skladana .oferta__przycisk::before,
-  .oferta__grupa.skladana .oferta__przycisk::after{
-    content:"";position:absolute;right:6px;top:50%;background:var(--akcent-ciemny);
-    transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .3s}
-  .oferta__grupa.skladana .oferta__przycisk::before{width:14px;height:1.5px;margin-top:-.75px}
-  .oferta__grupa.skladana .oferta__przycisk::after{width:1.5px;height:14px;margin-top:-7px;right:12.25px}
-  .oferta__grupa.skladana.otwarta .oferta__przycisk::after{transform:rotate(90deg);opacity:0}
-  .oferta__grupa.skladana .oferta__poz{display:none;padding-bottom:22px}
-  /* Bez animowania przezroczystości: gdy animacje stoją (karta w tle, część
-     podglądów), treść zostałaby niewidoczna. Animowany jest tylko lekki zjazd,
-     a ten zamrożony niczego nie psuje. */
-  .oferta__grupa.skladana.otwarta .oferta__poz{display:grid;animation:rozsuw .4s cubic-bezier(.2,.8,.2,1)}
-  @keyframes rozsuw{from{transform:translateY(-10px)}to{transform:none}}
 }
 @media (max-width:640px){
   .oferta__poz{grid-template-columns:1fr}

@@ -150,12 +150,10 @@ przyScrollu();
 })();
 
 /* ---------- oferta: na telefonie grupy zwijają się w akordeon ----------
-   Jedenaście pozycji z opisami to na wąskim ekranie kilka ekranów samego tekstu.
-   Na desktopie nic się nie zmienia — wszystko zostaje rozwinięte. */
+   Jedenaście pozycji z opisami to ściana tekstu — zwinięte na każdej szerokości. */
 (function(){
   var grupy = [].slice.call(document.querySelectorAll(".oferta__grupa"));
   if(!grupy.length) return;
-  var waskie = window.matchMedia("(max-width: 900px)");
 
   grupy.forEach(function(g, i){
     var nazwa = g.querySelector(".oferta__nazwa");
@@ -167,7 +165,13 @@ przyScrollu();
     btn.type = "button";
     btn.className = "oferta__przycisk";
     btn.setAttribute("aria-controls", poz.id);
-    while(nazwa.firstChild) btn.appendChild(nazwa.firstChild);
+    /* <br> z nagłówka zamieniam na spację — w pasku akordeonu nazwa idzie
+       jedną linią, a samo ukrycie <br> sklejałoby słowa */
+    while(nazwa.firstChild){
+      var w = nazwa.firstChild;
+      if(w.nodeName === "BR"){ nazwa.removeChild(w); btn.appendChild(document.createTextNode(" ")); }
+      else btn.appendChild(w);
+    }
 
     var licznik = document.createElement("span");
     licznik.className = "oferta__licznik";
@@ -176,28 +180,14 @@ przyScrollu();
     nazwa.appendChild(btn);
 
     btn.addEventListener("click", function(){
-      if(!waskie.matches) return;                 /* na desktopie nic nie zwijamy */
       var otwarta = g.classList.toggle("otwarta");
       btn.setAttribute("aria-expanded", otwarta ? "true" : "false");
     });
+
+    g.classList.add("skladana");
+    btn.setAttribute("aria-expanded", "false");
   });
 
-  function ustaw(){
-    grupy.forEach(function(g){
-      var btn = g.querySelector(".oferta__przycisk");
-      if(!btn) return;
-      if(waskie.matches){
-        g.classList.add("skladana");
-        btn.setAttribute("aria-expanded", g.classList.contains("otwarta") ? "true" : "false");
-      } else {
-        g.classList.remove("skladana");
-        btn.removeAttribute("aria-expanded");     /* po obrocie telefonu wraca pełna lista */
-      }
-    });
-  }
-  ustaw();
-  if(waskie.addEventListener) waskie.addEventListener("change", ustaw);
-  else if(waskie.addListener) waskie.addListener(ustaw);
 })();
 
 /* ---------- opinie: przesuwany pasek ----------
