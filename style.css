@@ -506,24 +506,11 @@ body.zablokowane{overflow:hidden}
   .stopka__kontakt{text-align:center}
   .stopka__kontakt a{justify-self:center}
   .stopka__dol{justify-content:center;text-align:center}
+  /* Na telefonie zdjęcie ust wypada — zostaje sama treść sekcji.
+     Kadr i tak był tam najsłabszym elementem, a sekcja bez niego jest czytelniejsza. */
   .pas{min-height:0;display:block}
-  /* wysokość z proporcji samego zdjęcia — przy stałej wysokości cover ucinał
-     30% kadru i usta lądowały przy krawędzi */
-  .pas__foto{position:relative;width:100%;height:auto;aspect-ratio:738/588;
-    object-fit:cover;object-position:center}
-  .pas__zaslona,.pas__ziarno{inset:0 0 auto 0;width:100%;height:auto;aspect-ratio:738/588}
-  /* Zdjęcie wygasza się na OBU krawędziach. Wcześniej góra była ucięta ostro,
-     a dół schodził do var(--tlo), czyli o odcień jaśniej niż tło pasa —
-     zostawała cienka krecha. Góra idzie do koloru sekcji wyżej, dół do tła pasa. */
-  .pas__zaslona{background:linear-gradient(to bottom,
-    var(--tlo) 0%,
-    rgba(251,247,242,.70) 6%,
-    rgba(251,247,242,0) 22%,
-    rgba(238,227,214,0) 46%,
-    rgba(238,227,214,.55) 76%,
-    rgba(238,227,214,.94) 93%,
-    var(--tlo-3) 100%)}
-  .pas__tresc{padding-top:0;padding-bottom:clamp(40px,8vw,60px);margin-top:-18px}
+  .pas__foto,.pas__zaslona,.pas__ziarno{display:none}
+  .pas__tresc{margin-top:0;padding-block:clamp(48px,10vw,72px)}
   /* cztery informacje jedna pod drugą zajmowały pół ekranu — na telefonie 2x2 */
   .pasek__inner{grid-template-columns:repeat(2,1fr);gap:20px 14px;padding-block:22px}
   .pasek__el{padding-left:12px}
