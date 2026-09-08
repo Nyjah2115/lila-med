@@ -251,10 +251,22 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
       rgba(251,247,242,.74) 34%,
       rgba(251,247,242,.20) 50%,
       rgba(251,247,242,0) 64%),
-    linear-gradient(to bottom, rgba(251,247,242,.4) 0%, rgba(251,247,242,0) 12%,
-      rgba(251,247,242,0) 88%, rgba(251,247,242,.4) 100%)}
+    /* Zdjęcie wtapia się w sekcje nad i pod sobą. Każda krawędź schodzi do INNEGO
+       koloru: wyżej jest --tlo, niżej --tlo-2. Wcześniej obie szły do --tlo
+       i tylko do 40 % krycia, więc dół kończył się widocznym cięciem. */
+    linear-gradient(to bottom,
+      rgb(251,247,242) 0%,
+      rgba(251,247,242,.62) 6%,
+      rgba(251,247,242,0) 20%,
+      rgba(244,235,225,0) 76%,
+      rgba(244,235,225,.66) 92%,
+      rgb(244,235,225) 100%)}
+/* ziarno przyciemnia przez multiply, więc bez wygaszenia zostawiało ostrą krechę
+   dokładnie na granicy sekcji — mimo miękkiego gradientu pod spodem */
 .pas__ziarno{position:absolute;inset:0;pointer-events:none;opacity:.45;
-  background:url("img/ziarno.png") repeat;background-size:128px 128px;mix-blend-mode:multiply}
+  background:url("img/ziarno.png") repeat;background-size:128px 128px;mix-blend-mode:multiply;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18%,#000 80%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0,#000 18%,#000 80%,transparent 100%)}
 .pas__tresc{position:relative;z-index:2;width:100%;padding-block:clamp(48px,6vw,70px)}
 .pas__tresc .tytul{margin-bottom:18px}
 .pas__lead{max-width:40ch;color:#6A5A50;margin:0 0 28px}
