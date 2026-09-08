@@ -328,7 +328,10 @@ przyScrollu();
     if(odRazu) karty.forEach(function(k){ k.style.transition = "none"; });
     dopasujWysokosc();
     var szer = karty[0].getBoundingClientRect().width || 300;
-    var bok  = szer * 0.78;                 /* odsunięcie sąsiada */
+    /* Na wąskim ekranie sąsiedzi wyglądają jak karty w talii — przy pełnym
+       odsunięciu wystawali poza ekran i trzeba było ich ucinać. */
+    var waskie = window.matchMedia("(max-width: 640px)").matches;
+    var bok  = szer * (waskie ? 0.17 : 0.78);
     karty.forEach(function(k, i){
       var d = (i - teraz + ile) % ile;
       if(d > ile / 2) d -= ile;             /* -1 to sąsiad z lewej */
@@ -339,8 +342,10 @@ przyScrollu();
       } else {
         var znak = d > 0 ? 1 : -1;
         var krok = Math.min(Math.abs(d), 2);
-        t = "translateX(" + (znak * bok * krok) + "px) scale(" + (krok === 1 ? .82 : .68) + ") " +
-            "rotateY(" + (-znak * (krok === 1 ? 26 : 38)) + "deg)";
+        var skala = waskie ? (krok === 1 ? .88 : .8) : (krok === 1 ? .82 : .68);
+        var obrot = waskie ? (krok === 1 ? 12 : 18) : (krok === 1 ? 26 : 38);
+        t = "translateX(" + (znak * bok * krok) + "px) scale(" + skala + ") " +
+            "rotateY(" + (-znak * obrot) + "deg)";
         o = krok === 1 ? .78 : .45; z = 20 - krok; f = "none";
         k.classList.remove("karuzela__el--srodek");
       }

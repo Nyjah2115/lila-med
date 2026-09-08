@@ -306,7 +306,10 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
    gdy przejścia stoją, slajdy i tak są na swoich miejscach. */
 .karuzela{position:relative}
 .karuzela__scena{position:relative;display:flex;align-items:center;justify-content:center;
-  perspective:1400px;min-height:280px}   /* właściwą wysokość dolicza skrypt z kart */
+  perspective:1400px;min-height:280px;
+  /* boczne kadry celowo wychodzą poza kadr sceny — bez tego rozpychały dokument
+     szerzej niż ekran, przez co telefon pozwalał przesuwać stronę w bok */
+  overflow:hidden;padding:14px 0}   /* właściwą wysokość dolicza skrypt z kart */
 .karuzela__el{position:absolute;margin:0;
   width:clamp(240px,26vw,360px);
   border-radius:18px;overflow:hidden;background:var(--karta);
@@ -596,7 +599,7 @@ body.zablokowane{overflow:hidden}
   /* Efekty to zdjęcia przed/po — w dwóch kolumnach na telefonie kafel ma
      ~160 px i nie widać na nim różnicy, po którą tu przyszedł odwiedzający. */
   /* na telefonie karuzela robi się węższa, a podpis większy */
-  .karuzela__el{width:min(78vw,320px)}
+  .karuzela__el{width:min(72vw,300px)}
 
   .karuzela__el figcaption{font-size:14px}
   .karuzela__sterowanie{justify-content:center;margin-top:22px}
