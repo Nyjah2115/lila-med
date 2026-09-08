@@ -346,7 +346,9 @@ body.zablokowane{overflow:hidden}
   color:#F5EADA;transform:translateY(-2px)}
 .opinie__strzalka:disabled{opacity:.3;cursor:default}
 
-.opinie__kropki{display:flex;gap:8px;margin-left:6px}
+/* przy dziesięciu opiniach kropki na desktopie tylko zaśmiecają — tam wystarczą
+   strzałki; na telefonie, gdzie widać jedną kartę, kropka na kartę ma sens */
+.opinie__kropki{display:none;gap:8px;margin-left:6px}
 .opinie__kropka{width:9px;height:9px;border-radius:50%;border:0;padding:0;cursor:pointer;
   background:rgba(84,69,64,.28);transition:background .3s,transform .3s}
 .opinie__kropka.aktywna{background:var(--akcent-ciemny);transform:scale(1.3)}
@@ -459,7 +461,7 @@ body.zablokowane{overflow:hidden}
   /* na telefonie jedna opinia na ekran, przesuwana palcem — strzałki zbędne */
   .opinie__pas{grid-auto-columns:84vw;gap:12px}
   .opinie__strzalka{display:none}
-  .opinie__kropki{margin:0 auto}
+  .opinie__kropki{display:flex;margin:0 auto;flex-wrap:wrap;justify-content:center}
   .stopka__gora{flex-direction:column;text-align:center}
   .stopka__kontakt{text-align:center}
   .stopka__kontakt a{justify-self:center}
