@@ -200,4 +200,59 @@ przyScrollu();
   else if(waskie.addListener) waskie.addListener(ustaw);
 })();
 
+/* ---------- opinie: przesuwany pasek ----------
+   Strzałki i kropki pokazują się dopiero, gdy jest co przewijać — przy trzech
+   opiniach na szerokim ekranie pasek się mieści i sterowanie znika samo. */
+(function(){
+  var pas = document.getElementById("opiniePas");
+  if(!pas) return;
+  var obudowa = pas.closest(".opinie");
+  var lewo  = obudowa.querySelector(".opinie__strzalka--lewo");
+  var prawo = obudowa.querySelector(".opinie__strzalka--prawo");
+  var kropki = document.getElementById("opinieKropki");
+  var karty = [].slice.call(pas.querySelectorAll(".opinia"));
+  if(!karty.length) return;
+
+  function jestCoPrzewijac(){ return pas.scrollWidth - pas.clientWidth > 8; }
+
+  karty.forEach(function(_, i){
+    var k = document.createElement("button");
+    k.type = "button"; k.className = "opinie__kropka";
+    k.setAttribute("aria-label", "Opinia " + (i+1));
+    k.addEventListener("click", function(){ przewinDo(i); });
+    kropki.appendChild(k);
+  });
+
+  function przewinDo(i){
+    var cel = karty[Math.max(0, Math.min(karty.length-1, i))];
+    pas.scrollTo({left: cel.offsetLeft - pas.offsetLeft, behavior:"smooth"});
+  }
+  function terazWidoczna(){
+    var x = pas.scrollLeft + pas.clientWidth/3;
+    var naj = 0, min = Infinity;
+    karty.forEach(function(k,i){
+      var d = Math.abs((k.offsetLeft - pas.offsetLeft) - pas.scrollLeft);
+      if(d < min){ min = d; naj = i; }
+    });
+    return naj;
+  }
+  function odswiez(){
+    var da = jestCoPrzewijac();
+    obudowa.classList.toggle("przesuwalne", da);
+    if(!da) return;
+    var i = terazWidoczna();
+    [].slice.call(kropki.children).forEach(function(k, j){
+      k.classList.toggle("aktywna", j === i);
+    });
+    lewo.hidden  = pas.scrollLeft <= 4;
+    prawo.hidden = pas.scrollLeft >= pas.scrollWidth - pas.clientWidth - 4;
+  }
+
+  lewo.addEventListener("click",  function(){ przewinDo(terazWidoczna() - 1); });
+  prawo.addEventListener("click", function(){ przewinDo(terazWidoczna() + 1); });
+  pas.addEventListener("scroll", odswiez, {passive:true});
+  window.addEventListener("resize", odswiez);
+  odswiez();
+})();
+
 })();
