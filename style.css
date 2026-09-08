@@ -14,7 +14,9 @@
   --akcent:#A07C3C;
   --akcent-ciemny:#7A5B24;   /* drobne etykiety: jasne złoto ma za mały kontrast */
   --akcent-jasny:#C9A86A;
-  --max:1180px;
+  /* kontener rośnie z ekranem — przy sztywnych 1180 px na monitorze 2560
+     zostawało po 690 px pustych marginesów z każdej strony */
+  --max:clamp(1180px,84vw,1680px);
   --serif:"Fraunces",Georgia,serif;
   --sans:"Outfit",system-ui,-apple-system,"Segoe UI",sans-serif;
   --cien:0 24px 60px -32px rgba(84,69,64,.35);
@@ -124,10 +126,10 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
 .hero__nad{display:flex;align-items:center;gap:12px;margin:0 0 22px;
   font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--przygas)}
 .hero__nad span{width:44px;height:1px;background:var(--akcent)}
-.hero__h1{font-size:clamp(36px,5vw,62px);letter-spacing:-.012em;margin:0 0 26px;line-height:1.06;
+.hero__h1{font-size:clamp(36px,4.6vw,78px);letter-spacing:-.012em;margin:0 0 26px;line-height:1.06;
   max-width:15ch}
 .hero__kursywa{font-style:italic;color:var(--akcent)}
-.hero__lead{max-width:38ch;margin:0 0 34px;font-size:clamp(16px,1.55vw,18.5px);
+.hero__lead{max-width:38ch;margin:0 0 34px;font-size:clamp(16px,1.25vw,20px);
   color:#6A5A50;line-height:1.72}
 .hero__cta{display:flex;flex-wrap:wrap;gap:13px}
 .hero__ocena{display:flex;align-items:center;gap:10px;margin:30px 0 0;font-size:14px;color:var(--przygas)}
@@ -157,13 +159,14 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
 .pasek__gwiazdki{font-size:12px;letter-spacing:.12em;color:var(--akcent);font-family:var(--sans)}
 
 /* ===================== SEKCJE ===================== */
-.sekcja{padding:clamp(74px,9.5vw,124px) 0;position:relative}
+.sekcja{padding:clamp(74px,8vw,150px) 0;position:relative}
 .sekcja--ciemna{background:var(--tlo-2)}
 .etykieta{margin:0 0 16px;font-size:12px;font-weight:500;letter-spacing:.22em;
   text-transform:uppercase;color:var(--akcent-ciemny)}
-.tytul{font-size:clamp(32px,5vw,56px);margin:0 0 22px;letter-spacing:-.012em}
+.tytul{font-size:clamp(32px,4.2vw,68px);margin:0 0 22px;letter-spacing:-.012em}
 .tytul__kursywa{font-style:italic;color:var(--akcent)}
-.wstep{max-width:62ch;color:var(--przygas);margin:0 0 clamp(36px,5vw,56px);font-size:17px}
+.wstep{max-width:62ch;color:var(--przygas);margin:0 0 clamp(36px,5vw,56px);
+  font-size:clamp(17px,1.1vw,19px)}
 
 /* ---- oferta ---- */
 .oferta{border-top:1px solid var(--linia-mocna)}
@@ -185,9 +188,9 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
 .oferta__poz .zabieg:last-child{padding-bottom:0}
 .oferta__poz .zabieg:nth-last-child(2):nth-child(odd){padding-bottom:0}
 .zabieg h4{font-family:var(--sans);font-weight:600;
-  font-size:clamp(17px,1.55vw,19px);line-height:1.35;letter-spacing:-.005em;
+  font-size:clamp(17px,1.35vw,21px);line-height:1.35;letter-spacing:-.005em;
   margin:0 0 7px;color:var(--tekst);transition:color .35s}
-.zabieg p{margin:0;font-size:15.5px;font-weight:400;line-height:1.62;
+.zabieg p{margin:0;font-size:clamp(15.5px,1vw,16.5px);font-weight:400;line-height:1.62;
   color:#6B5C53;max-width:44ch}
 .zabieg:hover h4{color:var(--akcent-ciemny)}
 
@@ -317,7 +320,7 @@ body.zablokowane{overflow:hidden}
 .opinie{position:relative}
 /* szerokość kart w vw, nie w procentach: procent w gridzie z przewijaniem
    liczy się od kontenera i kolumny same kurczą się do zmieszczenia */
-.opinie__pas{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(280px,40vw,440px);
+.opinie__pas{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(280px,30vw,470px);
   gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
   scrollbar-width:none;-ms-overflow-style:none;
   padding:6px;margin:-6px;scroll-padding:6px}
@@ -328,7 +331,7 @@ body.zablokowane{overflow:hidden}
   transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
 .opinia:hover{transform:translateY(-4px);box-shadow:var(--cien)}
 .opinia__gw{margin:0 0 14px;color:var(--akcent);letter-spacing:.16em;font-size:13px}
-.opinia p{margin:0;font-size:16px;line-height:1.68;color:var(--tekst)}
+.opinia p{margin:0;font-size:clamp(16px,1.05vw,17.5px);line-height:1.68;color:var(--tekst)}
 .opinia footer{margin-top:auto;padding-top:20px;display:flex;align-items:center;gap:10px;
   font-size:13px;letter-spacing:.04em;color:var(--tekst)}
 .opinia footer span{color:var(--przygas);font-size:11.5px;letter-spacing:.14em;
