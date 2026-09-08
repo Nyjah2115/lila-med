@@ -283,40 +283,44 @@ body.zablokowane{overflow:hidden}
 .lista li::before{content:"";position:absolute;left:0;top:.62em;width:12px;height:1px;background:var(--akcent)}
 
 /* ---- opinie ---- */
-/* Opinie jako przesuwany pasek. Na desktopie mieszczą się trzy i strzałki
-   same się chowają; gdy dojdą kolejne, pasek zaczyna się przewijać bez zmian w CSS. */
+/* Opinie jako poziomy pasek, także na desktopie: karty są szersze, więc zawsze
+   coś wystaje poza kadr i widać, że da się przesuwać. */
 .opinie{position:relative}
-.opinie__pas{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(280px,1fr);
-  gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+/* szerokość kart w vw, nie w procentach: procent w gridzie z przewijaniem
+   liczy się od kontenera i kolumny same kurczą się do zmieszczenia */
+.opinie__pas{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(280px,40vw,440px);
+  gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
   scrollbar-width:none;-ms-overflow-style:none;
-  padding:4px;margin:-4px;scroll-padding:4px}
+  padding:6px;margin:-6px;scroll-padding:6px}
 .opinie__pas::-webkit-scrollbar{display:none}
-.opinia{scroll-snap-align:start}
-.opinie__strzalka{position:absolute;top:50%;margin-top:-22px;z-index:3;
-  width:44px;height:44px;border-radius:50%;cursor:pointer;
-  border:1px solid var(--linia-mocna);background:var(--karta);color:var(--tekst);
-  display:none;place-items:center;font-size:24px;line-height:1;padding-bottom:3px;
-  box-shadow:0 10px 26px -18px rgba(84,69,64,.8);
-  transition:background .3s,border-color .3s,transform .3s}
-.opinie__strzalka:hover{border-color:var(--akcent);color:var(--akcent-ciemny);transform:scale(1.06)}
-.opinie__strzalka[hidden]{display:none!important}
-.opinie.przesuwalne .opinie__strzalka{display:grid}
-.opinie__strzalka--lewo{left:-14px}
-.opinie__strzalka--prawo{right:-14px}
-.opinie__kropki{display:none;justify-content:center;gap:8px;margin-top:20px}
-.opinie.przesuwalne .opinie__kropki{display:flex}
-.opinie__kropka{width:9px;height:9px;border-radius:50%;border:0;padding:0;cursor:pointer;
-  background:rgba(84,69,64,.30);transition:background .3s,transform .3s}
-.opinie__kropka.aktywna{background:var(--akcent-ciemny);transform:scale(1.3)}
-.opinia{margin:0;padding:30px 28px;border-radius:18px;border:1px solid var(--linia);background:var(--karta);
+.opinia{scroll-snap-align:start;margin:0;padding:30px 28px;border-radius:18px;
+  border:1px solid var(--linia);background:var(--karta);
   transition:transform .5s cubic-bezier(.2,.8,.2,1),box-shadow .5s}
 .opinia:hover{transform:translateY(-4px);box-shadow:var(--cien)}
 .opinia__gw{margin:0 0 14px;color:var(--akcent);letter-spacing:.16em;font-size:13px}
 .opinia p{margin:0;font-size:16px;line-height:1.68;color:var(--tekst)}
 .opinia footer{margin-top:20px;display:flex;align-items:center;gap:10px;
   font-size:13px;letter-spacing:.04em;color:var(--tekst)}
-.opinia footer span{color:var(--przygas);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
-.opinia footer span::before{content:"· "}
+.opinia footer span{color:var(--przygas);font-size:11.5px;letter-spacing:.14em;
+  text-transform:uppercase}
+.opinia footer span::before{content:"\00b7 "}
+
+.opinie__sterowanie{display:none;align-items:center;gap:14px;margin-top:26px}
+.opinie.przesuwalne .opinie__sterowanie{display:flex}
+.opinie__strzalka{width:48px;height:48px;flex:none;border-radius:50%;cursor:pointer;
+  display:grid;place-items:center;padding:0;
+  border:1px solid var(--linia-mocna);background:var(--karta);color:var(--tekst);
+  transition:background .35s,border-color .35s,color .35s,transform .35s,opacity .3s}
+.opinie__strzalka svg{width:19px;height:19px;display:block}
+.opinie__strzalka--prawo svg{transform:scaleX(-1)}
+.opinie__strzalka:hover:not(:disabled){background:var(--braz);border-color:var(--braz);
+  color:#F5EADA;transform:translateY(-2px)}
+.opinie__strzalka:disabled{opacity:.3;cursor:default}
+
+.opinie__kropki{display:flex;gap:8px;margin-left:6px}
+.opinie__kropka{width:9px;height:9px;border-radius:50%;border:0;padding:0;cursor:pointer;
+  background:rgba(84,69,64,.28);transition:background .3s,transform .3s}
+.opinie__kropka.aktywna{background:var(--akcent-ciemny);transform:scale(1.3)}
 
 /* ---- kontakt ---- */
 .kontakt{display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(34px,6vw,70px);align-items:start}
@@ -447,9 +451,10 @@ body.zablokowane{overflow:hidden}
 }
 @media (max-width:640px){
   body{font-size:16px}
-  /* na telefonie jedna opinia na ekran, przesuwana palcem */
-  .opinie__pas{grid-auto-columns:88%;gap:12px}
-  .opinie__strzalka{display:none!important}
+  /* na telefonie jedna opinia na ekran, przesuwana palcem — strzałki zbędne */
+  .opinie__pas{grid-auto-columns:84vw;gap:12px}
+  .opinie__strzalka{display:none}
+  .opinie__kropki{margin:0 auto}
   .stopka__gora{flex-direction:column;text-align:center}
   .stopka__kontakt{text-align:center}
   .stopka__kontakt a{justify-self:center}

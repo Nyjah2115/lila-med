@@ -244,14 +244,18 @@ przyScrollu();
     [].slice.call(kropki.children).forEach(function(k, j){
       k.classList.toggle("aktywna", j === i);
     });
-    lewo.hidden  = pas.scrollLeft <= 4;
-    prawo.hidden = pas.scrollLeft >= pas.scrollWidth - pas.clientWidth - 4;
+    /* Wygaszone, nie ukryte — inaczej pasek sterowania skacze na krańcach.
+       Lewą wiążę z numerem karty, bo scroll-snap potrafi wystartować kilkadziesiąt
+       pikseli od zera i sam scrollLeft dawał wtedy fałszywie aktywną strzałkę. */
+    lewo.disabled  = i === 0;
+    prawo.disabled = pas.scrollLeft >= pas.scrollWidth - pas.clientWidth - 8;
   }
 
   lewo.addEventListener("click",  function(){ przewinDo(terazWidoczna() - 1); });
   prawo.addEventListener("click", function(){ przewinDo(terazWidoczna() + 1); });
   pas.addEventListener("scroll", odswiez, {passive:true});
   window.addEventListener("resize", odswiez);
+  pas.scrollLeft = 0;
   odswiez();
 })();
 
