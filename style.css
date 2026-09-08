@@ -75,12 +75,14 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
 .nav__nazwa{font-family:var(--serif);font-weight:500;font-size:19px;letter-spacing:.18em;color:var(--tekst)}
 .nav__nazwa b{font-weight:400;color:var(--akcent)}
 .nav__menu{display:flex;align-items:center;gap:clamp(16px,2.4vw,30px)}
-.nav__menu a{text-decoration:none;font-size:14px;letter-spacing:.05em;color:var(--przygas);
-  position:relative;padding:6px 0;transition:color .3s}
-.nav__menu a::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;
+/* wszędzie :not(.btn) — w rozwiniętym menu na telefonie siedzi przycisk z numerem
+   telefonu i te reguły nadpisywały mu kolor tekstu na własny, dając 1,8:1 kontrastu */
+.nav__menu a:not(.btn){text-decoration:none;font-size:14px;letter-spacing:.05em;
+  color:var(--przygas);position:relative;padding:6px 0;transition:color .3s}
+.nav__menu a:not(.btn)::after{content:"";position:absolute;left:0;bottom:0;height:1px;width:0;
   background:var(--akcent);transition:width .4s}
-.nav__menu a:hover{color:var(--tekst)}
-.nav__menu a:hover::after{width:100%}
+.nav__menu a:not(.btn):hover{color:var(--tekst)}
+.nav__menu a:not(.btn):hover::after{width:100%}
 .nav__menu-cta{display:none}
 .nav__prawo{display:flex;align-items:center;gap:12px;isolation:isolate}
 .nav__ikona{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;flex:none;
@@ -95,7 +97,10 @@ h1,h2,h3{font-family:var(--serif);font-weight:500;line-height:1.08;margin:0;
 .nav__ikona:hover::before{transform:scale(1)}
 .nav__ikona:hover svg{transform:rotate(-10deg) scale(1.06)}
 .nav__burger{display:none;width:40px;height:40px;border:1px solid var(--linia-mocna);background:#fff;
-  border-radius:50%;cursor:pointer;padding:0;place-items:center;gap:4px}
+  border-radius:50%;cursor:pointer;padding:0;
+  /* flex, nie grid: przy gridzie wiersze dzieliły całą wysokość przycisku po równo
+     i kreski rozjeżdżały się na 15 px zamiast 4 */
+  flex-direction:column;align-items:center;justify-content:center;gap:4px}
 .nav__burger span{display:block;width:15px;height:1px;background:var(--tekst);
   transition:transform .35s,opacity .25s}
 
@@ -446,17 +451,28 @@ body.zablokowane{overflow:hidden}
   .omnie,.kontakt{grid-template-columns:1fr}
   .omnie__foto{max-width:318px;margin:0 auto}
   .nav__tel{display:none}
-  .nav__burger{display:grid}
+  .nav__burger{display:flex}
+  /* logo i ikonki muszą zostać nad rozwiniętym menu, bo menu jest fixed
+     i w DOM-ie stoi po nich */
+  .nav__logo,.nav__prawo{position:relative;z-index:2}
   /* palec potrzebuje 44 px — na desktopie te kółka mają 38 i 40 */
   .nav__ikona,.nav__burger{width:44px;height:44px}
   .nav__ikona svg{width:18px;height:18px}
-  .nav__menu{position:fixed;inset:0 0 auto 0;top:0;padding:88px 26px 34px;
+  /* Menu chowane przez display, nie przez transform z przejściem. Wcześniej
+     otwarcie zależało od animacji — gdyby ta stanęła, menu zostawałoby poza
+     ekranem mimo visibility:visible. Animowany jest tylko krótki zjazd. */
+  .nav__menu{display:none;position:fixed;inset:0 0 auto 0;top:0;padding:88px 26px 34px;
     flex-direction:column;align-items:stretch;gap:0;
     background:rgba(251,247,242,.98);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
     border-bottom:1px solid var(--linia);
-    transform:translateY(-102%);transition:transform .55s cubic-bezier(.2,.8,.2,1);visibility:hidden}
-  .nav__menu.otwarte{transform:none;visibility:visible}
-  .nav__menu a{padding:15px 0;font-size:19px;border-bottom:1px solid var(--linia);color:var(--tekst)}
+    box-shadow:0 24px 50px -34px rgba(84,69,64,.8)}
+  .nav__menu.otwarte{display:flex;animation:menuWjazd .42s cubic-bezier(.2,.8,.2,1)}
+  @keyframes menuWjazd{from{transform:translateY(-14px)}to{transform:none}}
+  /* :not(.btn) — bez tego reguła nadpisywała przyciskowi telefonu kolor tekstu
+     na ciemny (kontrast 1,5:1 na brązowym tle), a do tego dokładała mu obramowanie
+     i własny padding */
+  .nav__menu a:not(.btn){padding:15px 0;font-size:19px;
+    border-bottom:1px solid var(--linia);color:var(--tekst)}
   .nav__menu-cta{display:block;margin-top:24px}
   .nav__menu-cta .btn{width:100%}
   .nav__burger.aktywny span:nth-child(1){transform:translateY(5px) rotate(45deg)}
