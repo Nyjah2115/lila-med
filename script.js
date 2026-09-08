@@ -190,63 +190,69 @@ przyScrollu();
 
 })();
 
-/* ---------- opinie: przesuwany pasek ----------
-   Strzałki i kropki pokazują się dopiero, gdy jest co przewijać — przy trzech
-   opiniach na szerokim ekranie pasek się mieści i sterowanie znika samo. */
+/* ---------- opinie: pasek bez końca ----------
+   Obok oryginalnego zestawu kładę dwie kopie i po przekroczeniu granicy
+   przeskakuję o szerokość jednego zestawu. Skok jest niewidoczny, bo pasek
+   wygląda w tym miejscu identycznie — dzięki temu przewijanie nigdy się nie kończy. */
 (function(){
   var pas = document.getElementById("opiniePas");
   if(!pas) return;
   var obudowa = pas.closest(".opinie");
-  var lewo  = obudowa.querySelector(".opinie__strzalka--lewo");
-  var prawo = obudowa.querySelector(".opinie__strzalka--prawo");
-  var kropki = document.getElementById("opinieKropki");
-  var karty = [].slice.call(pas.querySelectorAll(".opinia"));
-  if(!karty.length) return;
+  var lewo    = obudowa.querySelector(".opinie__strzalka--lewo");
+  var prawo   = obudowa.querySelector(".opinie__strzalka--prawo");
+  var karty   = [].slice.call(pas.children);
+  if(karty.length < 2) return;
 
-  function jestCoPrzewijac(){ return pas.scrollWidth - pas.clientWidth > 8; }
+  /* widoczność kart nie może zależeć od wjazdu — kopie i tak by go nie dostały */
+  karty.forEach(function(k){ k.classList.add("widac"); k.style.transitionDelay = "0s"; });
 
-  karty.forEach(function(_, i){
-    var k = document.createElement("button");
-    k.type = "button"; k.className = "opinie__kropka";
-    k.setAttribute("aria-label", "Opinia " + (i+1));
-    k.addEventListener("click", function(){ przewinDo(i); });
-    kropki.appendChild(k);
+  var zestaw = 0;
+
+  function skok(x){
+    var b = pas.style.scrollBehavior;
+    pas.style.scrollBehavior = "auto";
+    pas.scrollLeft = x;
+    pas.style.scrollBehavior = b;
+  }
+
+  function zbuduj(){
+    [].slice.call(pas.querySelectorAll(".opinia--kopia")).forEach(function(k){ k.remove(); });
+    for(var i = 0; i < 2; i++){
+      karty.forEach(function(k){
+        var kl = k.cloneNode(true);
+        kl.classList.add("opinia--kopia", "widac");
+        kl.setAttribute("aria-hidden", "true");
+        pas.appendChild(kl);
+      });
+    }
+    var pierwszaKopia = pas.querySelector(".opinia--kopia");
+    /* mierzę odstęp między początkiem oryginału a początkiem kopii — sam
+       scrollWidth zawierałby jeszcze padding paska i pętla by dryfowała */
+    zestaw = pierwszaKopia.offsetLeft - karty[0].offsetLeft;
+    obudowa.classList.add("przesuwalne");
+    skok(zestaw);
+  }
+
+  function pilnujPetli(){
+    if(!zestaw) return;
+    if(pas.scrollLeft < zestaw * 0.5)      skok(pas.scrollLeft + zestaw);
+    else if(pas.scrollLeft > zestaw * 1.5) skok(pas.scrollLeft - zestaw);
+  }
+
+  function przesun(kier){
+    var krok = karty[0].offsetWidth + 18;
+    pas.scrollBy({left: kier * krok, behavior: "smooth"});
+  }
+
+  lewo.addEventListener("click",  function(){ przesun(-1); });
+  prawo.addEventListener("click", function(){ przesun(1); });
+  pas.addEventListener("scroll", pilnujPetli, {passive:true});
+
+  var czekaj;
+  window.addEventListener("resize", function(){
+    clearTimeout(czekaj); czekaj = setTimeout(zbuduj, 200);
   });
-
-  function przewinDo(i){
-    var cel = karty[Math.max(0, Math.min(karty.length-1, i))];
-    pas.scrollTo({left: cel.offsetLeft - pas.offsetLeft, behavior:"smooth"});
-  }
-  function terazWidoczna(){
-    var x = pas.scrollLeft + pas.clientWidth/3;
-    var naj = 0, min = Infinity;
-    karty.forEach(function(k,i){
-      var d = Math.abs((k.offsetLeft - pas.offsetLeft) - pas.scrollLeft);
-      if(d < min){ min = d; naj = i; }
-    });
-    return naj;
-  }
-  function odswiez(){
-    var da = jestCoPrzewijac();
-    obudowa.classList.toggle("przesuwalne", da);
-    if(!da) return;
-    var i = terazWidoczna();
-    [].slice.call(kropki.children).forEach(function(k, j){
-      k.classList.toggle("aktywna", j === i);
-    });
-    /* Wygaszone, nie ukryte — inaczej pasek sterowania skacze na krańcach.
-       Lewą wiążę z numerem karty, bo scroll-snap potrafi wystartować kilkadziesiąt
-       pikseli od zera i sam scrollLeft dawał wtedy fałszywie aktywną strzałkę. */
-    lewo.disabled  = i === 0;
-    prawo.disabled = pas.scrollLeft >= pas.scrollWidth - pas.clientWidth - 8;
-  }
-
-  lewo.addEventListener("click",  function(){ przewinDo(terazWidoczna() - 1); });
-  prawo.addEventListener("click", function(){ przewinDo(terazWidoczna() + 1); });
-  pas.addEventListener("scroll", odswiez, {passive:true});
-  window.addEventListener("resize", odswiez);
-  pas.scrollLeft = 0;
-  odswiez();
+  zbuduj();
 })();
 
 })();
