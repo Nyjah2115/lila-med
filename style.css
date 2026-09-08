@@ -345,15 +345,22 @@ body.zablokowane{overflow:hidden}
 
 /* ===================== RESPONSYWNOŚĆ ===================== */
 @media (max-width:980px){
-  .hero__tlo img{object-position:60% 10%}
-  .hero__zaslona{background:
-    linear-gradient(to top, var(--tlo) 0%, rgba(251,247,242,.97) 32%, rgba(251,247,242,.76) 50%,
-      rgba(251,247,242,.30) 68%, rgba(251,247,242,.04) 86%),
-    radial-gradient(60% 40% at 50% 88%, rgba(201,168,106,.18), transparent 70%)}
-  .hero__tresc{padding-top:58svh;padding-bottom:104px}
+  /* Na telefonie zdjęcie przestaje być tłem całej sekcji i staje się pasem
+     o znanej wysokości. Tekst zaczyna się pod nim, na czystym kremie — wcześniej
+     leżał na dolnej części zdjęcia i akapit czytało się na sylwetce. */
+  .hero{min-height:0;display:block;background:var(--tlo)}
+  .hero__tlo{position:relative;height:56svh;min-height:340px}
+  .hero__tlo img{object-position:58% 12%}
+  .hero__zaslona,.hero__ziarno{inset:0 0 auto 0;height:56svh;min-height:340px}
+  .hero__zaslona{background:linear-gradient(to top,
+    var(--tlo) 0%, rgba(251,247,242,.92) 12%, rgba(251,247,242,.35) 30%,
+    rgba(251,247,242,0) 52%)}
+  .hero__tresc{padding-top:6px;padding-bottom:clamp(46px,9vw,72px)}
   .hero__h1{font-size:clamp(32px,7.6vw,46px);max-width:none}
   .hero__lead{max-width:none}
-  .hero__podpis{left:clamp(20px,5vw,40px);right:auto;bottom:auto;top:calc(58svh - 128px)}
+  .hero__podpis{left:clamp(20px,5vw,40px);right:auto;bottom:auto;
+    top:calc(56svh - 78px);min-height:0}
+  .hero__podpowiedz{display:none}
 }
 @media (max-width:900px){
   .oferta__grupa{grid-template-columns:1fr;gap:16px}
@@ -369,6 +376,9 @@ body.zablokowane{overflow:hidden}
   .omnie__foto{max-width:318px;margin:0 auto}
   .nav__tel{display:none}
   .nav__burger{display:grid}
+  /* palec potrzebuje 44 px — na desktopie te kółka mają 38 i 40 */
+  .nav__ikona,.nav__burger{width:44px;height:44px}
+  .nav__ikona svg{width:18px;height:18px}
   .nav__menu{position:fixed;inset:0 0 auto 0;top:0;padding:88px 26px 34px;
     flex-direction:column;align-items:stretch;gap:0;
     background:rgba(251,247,242,.98);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
@@ -395,7 +405,13 @@ body.zablokowane{overflow:hidden}
     rgba(251,247,242,.55) 76%, rgba(251,247,242,.94) 93%, var(--tlo) 100%)}
   .pas__tresc{padding-top:0;padding-bottom:clamp(40px,8vw,60px);margin-top:-18px}
   .pasek__inner{grid-template-columns:1fr}
-  .galeria{grid-template-columns:repeat(2,1fr)}
+  /* Efekty to zdjęcia przed/po — w dwóch kolumnach na telefonie kafel ma
+     ~160 px i nie widać na nim różnicy, po którą tu przyszedł odwiedzający. */
+  .galeria{grid-template-columns:1fr;gap:18px}
+  /* zdjęcia przed/po są składankami — przycinanie ich do stałych proporcji
+     ucinało dolny kadr, czyli połowę porównania */
+  .galeria__el img{aspect-ratio:auto;height:auto}
+  .galeria__el figcaption{font-size:14px;padding-top:44px}
   .hero__cta .btn{flex:1 1 100%}
   .hero__foto{max-width:100%;border-radius:150px 150px 20px 20px}
   .voucher{flex-direction:column;align-items:flex-start}
