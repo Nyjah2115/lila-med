@@ -463,7 +463,7 @@
     <form class="rezerwacja reveal" id="umow" novalidate>
       <div class="rezerwacja__naglowek">
         <h3>Umów wizytę online</h3>
-        <p>Wypełnij formularz, a&nbsp;wyślesz Monice gotową wiadomość z&nbsp;prośbą o&nbsp;termin. Rezerwacja jest potwierdzona dopiero po&nbsp;jej odpowiedzi.</p>
+        <p>Wybierz zabieg i&nbsp;godzinę z&nbsp;grafiku, a&nbsp;formularz złoży gotowe zgłoszenie. Rezerwacja jest ważna, kiedy Monika ją&nbsp;potwierdzi — odpisuje zwykle tego samego dnia.</p>
       </div>
 
       <div class="pole">
@@ -502,18 +502,21 @@
           </optgroup>
         </select>
       </div>
-      <div class="pole">
-        <label for="f-data">Preferowany dzień</label>
-        <input id="f-data" name="data" type="date" required>
-      </div>
-      <div class="pole">
-        <label for="f-pora">Pora dnia</label>
-        <select id="f-pora" name="pora">
-          <option>Dowolna</option>
-          <option>Rano (9:00 – 12:00)</option>
-          <option>Południe (12:00 – 15:00)</option>
-          <option>Popołudnie (15:00 – 19:00)</option>
-        </select>
+      <div class="pole pole--szerokie">
+        <span class="pole__tytul" id="f-termin-etykieta">Termin</span>
+        <div class="terminarz" role="group" aria-labelledby="f-termin-etykieta">
+          <div class="terminarz__gora">
+            <button class="terminarz__nawig" type="button" data-tydzien="-1" aria-label="Poprzedni tydzień">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M15 4.5 7.5 12 15 19.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p class="terminarz__zakres" id="terminarz-zakres" aria-live="polite"></p>
+            <button class="terminarz__nawig" type="button" data-tydzien="1" aria-label="Następny tydzień">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="terminarz__siatka" id="terminarz-siatka"></div>
+          <p class="terminarz__wybrany" id="terminarz-wybrany">Nie wybrano jeszcze godziny.</p>
+        </div>
       </div>
       <div class="pole pole--szerokie">
         <label for="f-uwagi">Uwagi <span>(nieobowiązkowe)</span></label>
@@ -527,7 +530,7 @@
         <button class="btn btn--obrys btn--duzy" type="button" data-kanal="mail">Wyślij e-mailem</button>
         <a class="rezerwacja__tel" href="tel:+48733735890">albo zadzwoń: 733 735 890</a>
       </div>
-      <p class="rezerwacja__nota">Formularz nie wysyła niczego w&nbsp;tle — otwiera WhatsAppa albo Twój program pocztowy z&nbsp;gotową treścią, którą sam(a) wysyłasz. Dane nie trafiają na&nbsp;żaden zewnętrzny serwer.</p>
+      <p class="rezerwacja__nota">Grafik pokazuje godziny pracy gabinetu — pojedyncze terminy mogą być już zajęte, dlatego Monika potwierdza każdą rezerwację. Formularz nie wysyła niczego w&nbsp;tle: otwiera WhatsAppa albo Twój program pocztowy z&nbsp;gotową treścią, którą sam(a) wysyłasz, więc dane nie trafiają na&nbsp;żaden zewnętrzny serwer.</p>
     </form>
   </div>
 </section>

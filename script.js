@@ -414,20 +414,198 @@ przyScrollu();
    Strona jest statyczna, więc nie ma dokąd wysłać POST-a. Zamiast pośrednika
    (Formspree, EmailJS) formularz składa czytelną wiadomość i otwiera WhatsAppa
    albo klienta poczty — dane pacjentki nie przechodzą przez cudzy serwer,
-   a Monika dostaje zgłoszenie tam, gdzie i tak odpisuje. */
+   a Monika dostaje zgłoszenie tam, gdzie i tak odpisuje.
+
+   Terminarz pokazuje godziny wynikające z grafiku gabinetu, a nie z kalendarza
+   Moniki — bez serwera strona nie ma skąd wiedzieć, co jest zajęte. Zajęte
+   godziny wpisuje się ręcznie w ZAJETE poniżej; docelowo zastąpi to Booksy
+   albo kalendarz Google. */
 (function(){
   var form = document.getElementById("umow");
   if(!form) return;
 
   var TEL  = "48733735890";
   var MAIL = "lilamed.kielce@gmail.com";
-  var blad = document.getElementById("rezerwacja-blad");
-  var poleData = form.querySelector("#f-data");
 
-  /* nie da się poprosić o termin w przeszłości */
-  var dzis = new Date();
-  dzis.setMinutes(dzis.getMinutes() - dzis.getTimezoneOffset());
-  poleData.min = dzis.toISOString().slice(0, 10);
+  /* Grafik gabinetu: godzina startu ostatniej wizyty jest o krok wcześniej
+     niż zamknięcie, żeby zabieg zmieścił się w godzinach otwarcia.
+     0 = niedziela. */
+  var GRAFIK = {
+    1: [9, 18], 2: [9, 18], 3: [9, 18], 4: [9, 18], 5: [9, 18],
+    6: [10, 14]
+  };
+  var KROK = 1;      /* co ile godzin proponujemy termin */
+  var ZAJETE = [];   /* np. "2026-09-22 14:00" — godziny już zarezerwowane */
+
+  var DNI = ["niedziela","poniedziałek","wtorek","środa","czwartek","piątek","sobota"];
+  var DNI_SKR = ["Nd","Pn","Wt","Śr","Cz","Pt","So"];
+  var MIESIACE = ["stycznia","lutego","marca","kwietnia","maja","czerwca",
+    "lipca","sierpnia","września","października","listopada","grudnia"];
+
+  var blad = document.getElementById("rezerwacja-blad");
+  var siatka = document.getElementById("terminarz-siatka");
+  var zakres = document.getElementById("terminarz-zakres");
+  var podsumowanie = document.getElementById("terminarz-wybrany");
+  var waskie = window.matchMedia("(max-width: 700px)");
+
+  var dzis = new Date(); dzis.setHours(0, 0, 0, 0);
+  var poniedzialek = poczatekTygodnia(dzis);
+  var pokazywany = new Date(poniedzialek);
+  var wybrany = null;          /* {iso, godzina} */
+  var dzienNaTelefonie = null; /* iso dnia otwartego w widoku wąskim */
+
+  function poczatekTygodnia(d){
+    var k = new Date(d);
+    k.setDate(k.getDate() - ((k.getDay() + 6) % 7));
+    k.setHours(0, 0, 0, 0);
+    return k;
+  }
+  function iso(d){
+    return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+  }
+  function zIso(s){
+    var c = s.split("-");
+    return new Date(+c[0], +c[1] - 1, +c[2]);
+  }
+  function opisDnia(s){
+    var d = zIso(s);
+    return d.getDate() + "." + ("0" + (d.getMonth() + 1)).slice(-2) + "." + d.getFullYear() + " (" + DNI[d.getDay()] + ")";
+  }
+
+  /* godziny możliwe w danym dniu — bez tych, które już minęły */
+  function godziny(d){
+    var g = GRAFIK[d.getDay()];
+    if(!g) return [];
+    var teraz = new Date();
+    var dzisiaj = iso(d) === iso(teraz);
+    var lista = [];
+    for(var h = g[0]; h <= g[1]; h += KROK){
+      if(dzisiaj && h <= teraz.getHours()) continue;
+      var etykieta = ("0" + h).slice(-2) + ":00";
+      if(ZAJETE.indexOf(iso(d) + " " + etykieta) > -1) continue;
+      lista.push(etykieta);
+    }
+    return lista;
+  }
+
+  function dniTygodnia(){
+    var lista = [];
+    for(var i = 0; i < 6; i++){            /* poniedziałek – sobota */
+      var d = new Date(pokazywany);
+      d.setDate(d.getDate() + i);
+      if(d < dzis) continue;               /* dni, które już były, pomijamy */
+      lista.push(d);
+    }
+    return lista;
+  }
+
+  function opisZakresu(dni){
+    if(!dni.length) return "";
+    var a = dni[0], b = dni[dni.length - 1];
+    var lewo = a.getDate() + (a.getMonth() === b.getMonth() ? "" : " " + MIESIACE[a.getMonth()]);
+    return lewo + " – " + b.getDate() + " " + MIESIACE[b.getMonth()] + " " + b.getFullYear();
+  }
+
+  function rysuj(){
+    var dni = dniTygodnia();
+    zakres.textContent = opisZakresu(dni);
+    form.querySelector("[data-tydzien='-1']").disabled = pokazywany <= poniedzialek;
+    siatka.innerHTML = "";
+    siatka.classList.toggle("terminarz__siatka--dzien", waskie.matches);
+
+    if(!dni.length){
+      siatka.innerHTML = "<p class='terminarz__pusto'>W tym tygodniu nie ma już wolnych godzin — sprawdź następny.</p>";
+      return;
+    }
+
+    if(waskie.matches){
+      /* na telefonie sześć kolumn się nie mieści: najpierw dzień, potem godziny */
+      var maWolne = function(d){ return godziny(d).length > 0; };
+      var wciazNaLiscie = dni.some(function(d){ return iso(d) === dzienNaTelefonie && maWolne(d); });
+      if(!wciazNaLiscie){
+        var pierwszyWolny = dni.filter(maWolne)[0] || dni[0];
+        dzienNaTelefonie = iso(pierwszyWolny);
+      }
+      var pasek = document.createElement("div");
+      pasek.className = "terminarz__dni";
+      dni.forEach(function(d){
+        var wolne = godziny(d).length;
+        var b = document.createElement("button");
+        b.type = "button";
+        b.className = "terminarz__dzien" + (iso(d) === dzienNaTelefonie ? " jest-otwarty" : "") + (wolne ? "" : " jest-pusty");
+        b.disabled = !wolne;
+        b.innerHTML = "<b>" + DNI_SKR[d.getDay()] + "</b><span>" + d.getDate() + "." + ("0" + (d.getMonth() + 1)).slice(-2) + "</span>";
+        b.addEventListener("click", function(){ dzienNaTelefonie = iso(d); rysuj(); });
+        pasek.appendChild(b);
+      });
+      siatka.appendChild(pasek);
+
+      var godz = document.createElement("div");
+      godz.className = "terminarz__godziny";
+      var lista = godziny(zIso(dzienNaTelefonie));
+      if(!lista.length) godz.innerHTML = "<p class='terminarz__pusto'>Brak wolnych godzin tego dnia.</p>";
+      lista.forEach(function(h){ godz.appendChild(guzik(dzienNaTelefonie, h)); });
+      siatka.appendChild(godz);
+      return;
+    }
+
+    dni.forEach(function(d){
+      var kol = document.createElement("div");
+      kol.className = "terminarz__kolumna";
+      var naglowek = document.createElement("p");
+      naglowek.className = "terminarz__naglowek";
+      naglowek.innerHTML = "<b>" + DNI_SKR[d.getDay()] + "</b> " + d.getDate() + "." + ("0" + (d.getMonth() + 1)).slice(-2);
+      kol.appendChild(naglowek);
+      var lista = godziny(d);
+      if(!lista.length){
+        var pusto = document.createElement("p");
+        pusto.className = "terminarz__pusto";
+        pusto.textContent = "—";
+        kol.appendChild(pusto);
+      }
+      lista.forEach(function(h){ kol.appendChild(guzik(iso(d), h)); });
+      siatka.appendChild(kol);
+    });
+  }
+
+  function guzik(dzien, h){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "terminarz__godzina";
+    b.textContent = h;
+    b.setAttribute("aria-pressed", "false");
+    if(wybrany && wybrany.iso === dzien && wybrany.godzina === h){
+      b.classList.add("jest-wybrana");
+      b.setAttribute("aria-pressed", "true");
+    }
+    b.addEventListener("click", function(){
+      wybrany = {iso: dzien, godzina: h};
+      form.querySelector(".terminarz").classList.remove("pole--zle");
+      blad.hidden = true;
+      opiszWybor();
+      rysuj();
+    });
+    return b;
+  }
+
+  function opiszWybor(){
+    podsumowanie.textContent = wybrany
+      ? "Wybrany termin: " + opisDnia(wybrany.iso) + ", godz. " + wybrany.godzina
+      : "Nie wybrano jeszcze godziny.";
+    podsumowanie.classList.toggle("jest-wybrany", !!wybrany);
+  }
+
+  form.querySelectorAll("[data-tydzien]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var krok = +b.getAttribute("data-tydzien");
+      var nowy = new Date(pokazywany);
+      nowy.setDate(nowy.getDate() + krok * 7);
+      if(nowy < poniedzialek) return;
+      pokazywany = nowy;
+      rysuj();
+    });
+  });
+  waskie.addEventListener("change", rysuj);
 
   function wartosc(id){ return (form.querySelector(id).value || "").trim(); }
 
@@ -436,17 +614,9 @@ przyScrollu();
     if(p) p.classList.toggle("pole--zle", zle);
   }
 
-  function poDacie(iso){
-    if(!iso) return "";
-    var cz = iso.split("-");
-    var dni = ["niedziela","poniedziałek","wtorek","środa","czwartek","piątek","sobota"];
-    var d = new Date(+cz[0], +cz[1] - 1, +cz[2]);
-    return cz[2] + "." + cz[1] + "." + cz[0] + " (" + dni[d.getDay()] + ")";
-  }
-
   function sprawdz(){
     var braki = [];
-    ["#f-imie", "#f-tel", "#f-zabieg", "#f-data"].forEach(function(id){
+    ["#f-imie", "#f-tel", "#f-zabieg"].forEach(function(id){
       var el = form.querySelector(id);
       var puste = !(el.value || "").trim();
       oznacz(el, puste);
@@ -455,14 +625,20 @@ przyScrollu();
     /* numer musi mieć szansę być numerem — inaczej Monika nie oddzwoni */
     var tel = form.querySelector("#f-tel");
     var cyfry = wartosc("#f-tel").replace(/\D/g, "");
-    if(!braki.length && cyfry.length < 9){ oznacz(tel, true); braki.push(tel); }
+    var zlyTel = !braki.length && cyfry.length < 9;
+    if(zlyTel){ oznacz(tel, true); braki.push(tel); }
 
-    if(braki.length){
-      blad.textContent = cyfry.length && cyfry.length < 9 && braki[0] === tel
+    var terminarz = form.querySelector(".terminarz");
+    terminarz.classList.toggle("pole--zle", !wybrany);
+
+    if(braki.length || !wybrany){
+      blad.textContent = zlyTel
         ? "Numer telefonu wygląda na niepełny — wpisz 9 cyfr."
-        : "Uzupełnij zaznaczone pola, żeby wiadomość miała komplet informacji.";
+        : (!braki.length ? "Wybierz termin z kalendarza poniżej."
+                         : "Uzupełnij zaznaczone pola, żeby wiadomość miała komplet informacji.");
       blad.hidden = false;
-      braki[0].focus();
+      (braki[0] || terminarz).scrollIntoView({block: "center", behavior: "smooth"});
+      if(braki[0]) braki[0].focus();
       return false;
     }
     blad.hidden = true;
@@ -471,17 +647,16 @@ przyScrollu();
 
   function tresc(){
     var w = [];
-    w.push("Dzień dobry, chciałabym umówić wizytę w Lila Med.");
+    w.push("Dzień dobry, chciałabym zarezerwować wizytę w Lila Med.");
     w.push("");
     w.push("Imię i nazwisko: " + wartosc("#f-imie"));
     w.push("Telefon: " + wartosc("#f-tel"));
     w.push("Zabieg: " + wartosc("#f-zabieg"));
-    w.push("Preferowany dzień: " + poDacie(wartosc("#f-data")));
-    w.push("Pora dnia: " + wartosc("#f-pora"));
+    w.push("Termin: " + opisDnia(wybrany.iso) + ", godz. " + wybrany.godzina);
     var u = wartosc("#f-uwagi");
     if(u) { w.push(""); w.push("Uwagi: " + u); }
     w.push("");
-    w.push("Wiadomość wysłana z formularza na stronie lilamed.");
+    w.push("Wiadomość wysłana z formularza rezerwacji na stronie lilamed.");
     return w.join("\n");
   }
 
@@ -494,7 +669,7 @@ przyScrollu();
       if(przycisk.getAttribute("data-kanal") === "whatsapp"){
         window.open("https://wa.me/" + TEL + "?text=" + encodeURIComponent(t), "_blank", "noopener");
       } else {
-        var temat = "Rezerwacja wizyty — " + wartosc("#f-imie");
+        var temat = "Rezerwacja: " + wartosc("#f-zabieg") + " — " + opisDnia(wybrany.iso) + " " + wybrany.godzina;
         window.location.href = "mailto:" + MAIL +
           "?subject=" + encodeURIComponent(temat) + "&body=" + encodeURIComponent(t);
       }
@@ -505,6 +680,9 @@ przyScrollu();
   form.addEventListener("input", function(e){
     if(e.target.closest(".pole--zle")) oznacz(e.target, false);
   });
+
+  opiszWybor();
+  rysuj();
 })();
 
 })();
