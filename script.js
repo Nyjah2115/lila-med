@@ -410,4 +410,101 @@ przyScrollu();
   });
 })();
 
+/* ===== FORMULARZ REZERWACJI =====
+   Strona jest statyczna, więc nie ma dokąd wysłać POST-a. Zamiast pośrednika
+   (Formspree, EmailJS) formularz składa czytelną wiadomość i otwiera WhatsAppa
+   albo klienta poczty — dane pacjentki nie przechodzą przez cudzy serwer,
+   a Monika dostaje zgłoszenie tam, gdzie i tak odpisuje. */
+(function(){
+  var form = document.getElementById("umow");
+  if(!form) return;
+
+  var TEL  = "48733735890";
+  var MAIL = "lilamed.kielce@gmail.com";
+  var blad = document.getElementById("rezerwacja-blad");
+  var poleData = form.querySelector("#f-data");
+
+  /* nie da się poprosić o termin w przeszłości */
+  var dzis = new Date();
+  dzis.setMinutes(dzis.getMinutes() - dzis.getTimezoneOffset());
+  poleData.min = dzis.toISOString().slice(0, 10);
+
+  function wartosc(id){ return (form.querySelector(id).value || "").trim(); }
+
+  function oznacz(el, zle){
+    var p = el.closest(".pole");
+    if(p) p.classList.toggle("pole--zle", zle);
+  }
+
+  function poDacie(iso){
+    if(!iso) return "";
+    var cz = iso.split("-");
+    var dni = ["niedziela","poniedziałek","wtorek","środa","czwartek","piątek","sobota"];
+    var d = new Date(+cz[0], +cz[1] - 1, +cz[2]);
+    return cz[2] + "." + cz[1] + "." + cz[0] + " (" + dni[d.getDay()] + ")";
+  }
+
+  function sprawdz(){
+    var braki = [];
+    ["#f-imie", "#f-tel", "#f-zabieg", "#f-data"].forEach(function(id){
+      var el = form.querySelector(id);
+      var puste = !(el.value || "").trim();
+      oznacz(el, puste);
+      if(puste) braki.push(el);
+    });
+    /* numer musi mieć szansę być numerem — inaczej Monika nie oddzwoni */
+    var tel = form.querySelector("#f-tel");
+    var cyfry = wartosc("#f-tel").replace(/\D/g, "");
+    if(!braki.length && cyfry.length < 9){ oznacz(tel, true); braki.push(tel); }
+
+    if(braki.length){
+      blad.textContent = cyfry.length && cyfry.length < 9 && braki[0] === tel
+        ? "Numer telefonu wygląda na niepełny — wpisz 9 cyfr."
+        : "Uzupełnij zaznaczone pola, żeby wiadomość miała komplet informacji.";
+      blad.hidden = false;
+      braki[0].focus();
+      return false;
+    }
+    blad.hidden = true;
+    return true;
+  }
+
+  function tresc(){
+    var w = [];
+    w.push("Dzień dobry, chciałabym umówić wizytę w Lila Med.");
+    w.push("");
+    w.push("Imię i nazwisko: " + wartosc("#f-imie"));
+    w.push("Telefon: " + wartosc("#f-tel"));
+    w.push("Zabieg: " + wartosc("#f-zabieg"));
+    w.push("Preferowany dzień: " + poDacie(wartosc("#f-data")));
+    w.push("Pora dnia: " + wartosc("#f-pora"));
+    var u = wartosc("#f-uwagi");
+    if(u) { w.push(""); w.push("Uwagi: " + u); }
+    w.push("");
+    w.push("Wiadomość wysłana z formularza na stronie lilamed.");
+    return w.join("\n");
+  }
+
+  form.addEventListener("submit", function(e){ e.preventDefault(); });
+
+  form.querySelectorAll("[data-kanal]").forEach(function(przycisk){
+    przycisk.addEventListener("click", function(){
+      if(!sprawdz()) return;
+      var t = tresc();
+      if(przycisk.getAttribute("data-kanal") === "whatsapp"){
+        window.open("https://wa.me/" + TEL + "?text=" + encodeURIComponent(t), "_blank", "noopener");
+      } else {
+        var temat = "Rezerwacja wizyty — " + wartosc("#f-imie");
+        window.location.href = "mailto:" + MAIL +
+          "?subject=" + encodeURIComponent(temat) + "&body=" + encodeURIComponent(t);
+      }
+    });
+  });
+
+  /* czerwona ramka znika, gdy tylko pole zostanie poprawione */
+  form.addEventListener("input", function(e){
+    if(e.target.closest(".pole--zle")) oznacz(e.target, false);
+  });
+})();
+
 })();
