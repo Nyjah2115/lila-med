@@ -737,10 +737,30 @@ przyScrollu();
       layout: "month_view",
       config: {theme: "light"}
     });
+    /* kalendarz przejmuje paletę strony — inaczej w kremowej karcie siedzi
+       biało-czarne okienko z cudzego serwisu */
     window.Cal("ui", {
       theme: "light",
       layout: "month_view",
-      cssVarsPerTheme: {light: {"cal-brand": "#544540"}}
+      cssVarsPerTheme: {light: {
+        "cal-brand": "#544540",              /* przyciski i zaznaczony dzień */
+        "cal-brand-emphasis": "#61504A",
+        "cal-brand-text": "#F5EADA",
+        "cal-bg": "#FFFFFF",
+        "cal-bg-emphasis": "#EEE3D6",        /* podświetlenie pod kursorem */
+        "cal-bg-subtle": "#F4EBE1",
+        "cal-bg-muted": "#FBF7F2",
+        "cal-bg-inverted": "#544540",
+        "cal-text": "#2C2320",
+        "cal-text-emphasis": "#2C2320",
+        "cal-text-subtle": "#7B6B62",
+        "cal-text-muted": "#A3948B",
+        "cal-text-inverted": "#F5EADA",
+        "cal-border": "rgba(84,69,64,.14)",
+        "cal-border-subtle": "rgba(84,69,64,.10)",
+        "cal-border-emphasis": "rgba(84,69,64,.26)",
+        "cal-border-booker": "rgba(84,69,64,.14)"
+      }}
     });
 
     /* gdyby kalendarz nie wstał (brak sieci, blokada skryptów), wracamy do
