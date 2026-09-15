@@ -427,6 +427,12 @@ przyScrollu();
   var TEL  = "48733735890";
   var MAIL = "lilamed.kielce@gmail.com";
 
+  /* Adres rezerwacji cal.com — np. "lila-med". Dopóki jest pusty, karta zostaje
+     przy formularzu z grafikiem. Po wpisaniu adresu w to miejsce wchodzi
+     prawdziwy kalendarz: wolne godziny biorą się z kalendarza Google Moniki,
+     a rezerwacja zapisuje się sama, bez potwierdzania wiadomością. */
+  var CAL = "";
+
   /* Grafik gabinetu: godzina startu ostatniej wizyty jest o krok wcześniej
      niż zamknięcie, żeby zabieg zmieścił się w godzinach otwarcia.
      0 = niedziela. */
@@ -681,8 +687,72 @@ przyScrollu();
     if(e.target.closest(".pole--zle")) oznacz(e.target, false);
   });
 
+  /* ---- kalendarz cal.com ----
+     Wchodzi na końcu, kiedy formularz jest już gotowy — dzięki temu awaria
+     osadzenia ma do czego wrócić. */
+  function trybKarty(ktory){
+    form.classList.toggle("rezerwacja--cal", ktory === "kalendarz");
+    document.getElementById("cal-osadzenie").hidden = ktory !== "kalendarz";
+    form.querySelectorAll("[data-tryb]").forEach(function(p){
+      p.hidden = p.getAttribute("data-tryb") !== ktory;
+    });
+  }
+
+  function osadzKalendarz(adres){
+    var miejsce = document.getElementById("cal-osadzenie");
+    if(!miejsce) return;
+    trybKarty("kalendarz");
+
+    /* rozruch z dokumentacji cal.com: kolejka poleceń musi powstać przed
+       skryptem, bo embed.js dopiero ją przetwarza po wczytaniu */
+    (function(C, A, L){
+      var p = function(a, ar){ a.q.push(ar); };
+      var d = C.document;
+      C.Cal = C.Cal || function(){
+        var cal = C.Cal, ar = arguments;
+        if(!cal.loaded){
+          cal.ns = {}; cal.q = cal.q || [];
+          d.head.appendChild(d.createElement("script")).src = A;
+          cal.loaded = true;
+        }
+        if(ar[0] === L){
+          var api = function(){ p(api, arguments); };
+          var przestrzen = ar[1];
+          api.q = api.q || [];
+          if(typeof przestrzen === "string"){
+            cal.ns[przestrzen] = cal.ns[przestrzen] || api;
+            p(cal.ns[przestrzen], ar);
+            p(cal, ["initNamespace", przestrzen]);
+          } else p(cal, ar);
+          return;
+        }
+        p(cal, ar);
+      };
+    })(window, "https://app.cal.com/embed/embed.js", "init");
+
+    window.Cal("init", {origin: "https://cal.com"});
+    window.Cal("inline", {
+      elementOrSelector: "#cal-osadzenie",
+      calLink: adres,
+      layout: "month_view",
+      config: {theme: "light"}
+    });
+    window.Cal("ui", {
+      theme: "light",
+      layout: "month_view",
+      cssVarsPerTheme: {light: {"cal-brand": "#544540"}}
+    });
+
+    /* gdyby kalendarz nie wstał (brak sieci, blokada skryptów), wracamy do
+       formularza — lepiej zgłoszenie WhatsAppem niż pusta dziura w karcie */
+    setTimeout(function(){
+      if(!miejsce.querySelector("iframe")) trybKarty("formularz");
+    }, 8000);
+  }
+
   opiszWybor();
   rysuj();
+  if(CAL) osadzKalendarz(CAL);
 })();
 
 })();

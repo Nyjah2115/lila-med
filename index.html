@@ -466,6 +466,11 @@
         <p>Wybierz zabieg i&nbsp;godzinę z&nbsp;grafiku, a&nbsp;formularz złoży gotowe zgłoszenie. Rezerwacja jest ważna, kiedy Monika ją&nbsp;potwierdzi — odpisuje zwykle tego samego dnia.</p>
       </div>
 
+      <!-- Tu ląduje kalendarz cal.com z prawdziwymi wolnymi terminami, kiedy
+           w script.js wpiszemy adres rezerwacji. Dopóki jest pusty, karta
+           zostaje przy formularzu poniżej. -->
+      <div class="rezerwacja__cal" id="cal-osadzenie" hidden></div>
+
       <div class="pole">
         <label for="f-imie">Imię i nazwisko</label>
         <input id="f-imie" name="imie" type="text" autocomplete="name" placeholder="Anna Kowalska" required>
@@ -523,6 +528,8 @@
         <textarea id="f-uwagi" name="uwagi" rows="3" placeholder="Np. pierwsza wizyta, ciąża, przyjmowane leki, alternatywny termin."></textarea>
       </div>
 
+      <p class="rezerwacja__nota" data-tryb="kalendarz" hidden>Kalendarz pokazuje godziny wolne na&nbsp;dziś — zajęte terminy znikają automatycznie. Po&nbsp;rezerwacji dostaniesz potwierdzenie mailem, a&nbsp;wizyta od&nbsp;razu trafia do&nbsp;kalendarza gabinetu.</p>
+
       <p class="rezerwacja__blad" id="rezerwacja-blad" role="alert" hidden></p>
 
       <div class="rezerwacja__akcje">
@@ -530,7 +537,7 @@
         <button class="btn btn--obrys btn--duzy" type="button" data-kanal="mail">Wyślij e-mailem</button>
         <a class="rezerwacja__tel" href="tel:+48733735890">albo zadzwoń: 733 735 890</a>
       </div>
-      <p class="rezerwacja__nota">Grafik pokazuje godziny pracy gabinetu — pojedyncze terminy mogą być już zajęte, dlatego Monika potwierdza każdą rezerwację. Formularz nie wysyła niczego w&nbsp;tle: otwiera WhatsAppa albo Twój program pocztowy z&nbsp;gotową treścią, którą sam(a) wysyłasz, więc dane nie trafiają na&nbsp;żaden zewnętrzny serwer.</p>
+      <p class="rezerwacja__nota" data-tryb="formularz">Grafik pokazuje godziny pracy gabinetu — pojedyncze terminy mogą być już zajęte, dlatego Monika potwierdza każdą rezerwację. Formularz nie wysyła niczego w&nbsp;tle: otwiera WhatsAppa albo Twój program pocztowy z&nbsp;gotową treścią, którą sam(a) wysyłasz, więc dane nie trafiają na&nbsp;żaden zewnętrzny serwer.</p>
     </form>
   </div>
 </section>
