@@ -9,3 +9,6 @@ podglad-strony.png
 # skompilowane narzędzie podglądu
 tools/podglad
 .DS_Store
+
+# instrukcja wdrożenia kalendarza (dane i ustalenia klientki)
+KALENDARZ-CAL-SETUP.md
