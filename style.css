@@ -701,3 +701,29 @@ body.zablokowane{overflow:hidden}
   .hero__foto{max-width:100%;border-radius:150px 150px 20px 20px}
   .voucher{flex-direction:column;align-items:flex-start}
 }
+
+/* ---- duże monitory ----
+   Wszystkie clamp-y na stronie dochodzą do sufitu w okolicach 1700 px i powyżej
+   tej szerokości układ zamiera: treść stoi w 1680 px, a reszta ekranu zostaje
+   pusta. Tu podnoszę sufity, żeby na 2K i ultrapanoramie strona rosła dalej.
+   Kolumna nadal ma limit — linia tekstu ciągnąca się przez cały ekran jest
+   nieczytelna — ale limit jest po prostu wyższy. */
+@media (min-width:1700px){
+  :root{--max:clamp(1680px,88vw,2200px)}
+  body{font-size:18px}
+  .hero__h1{font-size:clamp(78px,4.6vw,104px)}
+  .hero__lead{font-size:clamp(20px,1.25vw,24px);max-width:42ch}
+  .tytul{font-size:clamp(68px,4.2vw,92px)}
+  .wstep{font-size:clamp(19px,1.1vw,23px)}
+  .zabieg h4{font-size:clamp(21px,1.35vw,25px)}
+  .zabieg p{font-size:clamp(16.5px,1vw,18.5px)}
+  .opinia p{font-size:clamp(17.5px,1.05vw,20px)}
+  .opinie__pas{grid-auto-columns:clamp(470px,30vw,620px)}
+  .omnie{grid-template-columns:minmax(318px,430px) minmax(0,1fr)}
+  .rezerwacja__naglowek h3{font-size:clamp(30px,2.4vw,38px)}
+  .sekcja{padding:clamp(150px,8vw,190px) 0}
+  .karuzela__el{width:clamp(360px,26vw,470px)}
+}
+@media (min-width:2200px){
+  body{font-size:19.5px}
+}
