@@ -26,8 +26,12 @@
   --cien:0 24px 60px -32px rgba(84,69,64,.35);
 }
 *,*::before,*::after{box-sizing:border-box}
-html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Przewijaniem steruje Lenis (klasę .lenis dokłada sam po starcie). Natywne
+   smooth kłóciłoby się z jego interpolacją, więc zostaje tylko jako zapas,
+   gdyby biblioteka nie wstała. */
+html{-webkit-text-size-adjust:100%}
+html:not(.lenis){scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html:not(.lenis){scroll-behavior:auto}}
 body{
   margin:0;background:var(--tlo);color:var(--tekst);
   font-family:var(--sans);font-weight:400;font-size:17px;line-height:1.65;

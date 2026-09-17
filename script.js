@@ -5,6 +5,35 @@
 var podglad = location.search.indexOf("podglad") >= 0; /* rysuj też w ukrytej karcie — do zrzutów */
 var mniejRuchu = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* ---------- płynne przewijanie (Lenis) ----------
+   Ta sama biblioteka i te same ustawienia co na stronie Zaplecione. Lenis nie
+   blokuje przewijania, tylko interpoluje pozycję, więc natywne zdarzenie scroll
+   nadal leci i cała reszta skryptu (reveal, karuzela, pasek nawigacji) działa
+   bez zmian. Gdyby biblioteka się nie wczytała albo ktoś ma ograniczony ruch,
+   zostaje zwykłe przewijanie przeglądarki. */
+var lenis = null;
+if(window.Lenis && !mniejRuchu){
+  try{
+    lenis = new window.Lenis({ duration: 1.15, wheelMultiplier: 0.9, touchMultiplier: 1.6 });
+    (function takt(t){ lenis.raf(t); window.requestAnimationFrame(takt); })();
+  }catch(e){ lenis = null; }
+}
+
+/* Linki do sekcji też jadą przez Lenisa — inaczej strona skacze, a Lenis przez
+   moment walczy z nową pozycją. Odstęp na pasek nawigacji. */
+document.addEventListener("click", function(e){
+  if(!lenis) return;
+  var a = e.target.closest && e.target.closest('a[href^="#"]');
+  if(!a) return;
+  var id = a.getAttribute("href");
+  if(id === "#") return;
+  var cel = document.querySelector(id);
+  if(!cel) return;
+  e.preventDefault();
+  var nav = document.getElementById("nav");
+  lenis.scrollTo(cel, { offset: -(nav ? nav.offsetHeight : 72), duration: 1.4 });
+});
+
 /* ---------- widoczność liczona z getBoundingClientRect ----------
    IntersectionObserver bywa martwy w podglądach, a w karcie w tle stoi rAF,
    więc liczymy synchronicznie przy scrollu i resize. */
@@ -130,6 +159,7 @@ przyScrollu();
     pokaz(i);
     lupa.hidden = false;
     document.body.classList.add("zablokowane");
+    if(lenis) lenis.stop();
     /* wymuszony reflow zamiast requestAnimationFrame — w karcie w tle rAF stoi
        i nakładka zostałaby przezroczysta na zawsze */
     void lupa.offsetWidth;
@@ -140,6 +170,7 @@ przyScrollu();
   function zamknijLupe(){
     lupa.classList.remove("widoczna");
     document.body.classList.remove("zablokowane");
+    if(lenis) lenis.start();
     setTimeout(function(){ lupa.hidden = true; obraz.removeAttribute("src"); }, 260);
     if(ostatnioKliknięty) ostatnioKliknięty.focus();
   }
