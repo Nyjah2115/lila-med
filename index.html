@@ -164,6 +164,94 @@
       </div>
     </div>
 
+    <form class="rezerwacja reveal" id="umow" novalidate>
+      <div class="rezerwacja__naglowek">
+        <h3>Umów wizytę online</h3>
+        <p>Wybierz zabieg i&nbsp;godzinę z&nbsp;grafiku, a&nbsp;formularz złoży gotowe zgłoszenie. Rezerwacja jest ważna, kiedy Monika ją&nbsp;potwierdzi — odpisuje zwykle tego samego dnia.</p>
+      </div>
+
+      <!-- Rezerwacja online. Kolory i krój przepisane ze stylu strony,
+           żeby widget był jej częścią, a nie wklejonym okienkiem. -->
+      <div class="rezerwacja__cal" id="rezerwacje-widget"></div>
+      <script src="https://umowterminy.pl/embed.js"
+              data-salon="lila-med"
+              data-accent="#A07C3C"
+              data-bg="#FBF7F2"
+              data-text="#2C2320"
+              data-radius="10"
+              data-font="Outfit, system-ui, sans-serif"
+              data-font-url="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap"
+              data-target="#rezerwacje-widget"></script>
+
+      <div class="pole">
+        <label for="f-imie">Imię i nazwisko</label>
+        <input id="f-imie" name="imie" type="text" autocomplete="name" placeholder="Anna Kowalska" required>
+      </div>
+      <div class="pole">
+        <label for="f-tel">Telefon</label>
+        <input id="f-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="600 100 200" required>
+      </div>
+      <div class="pole pole--szerokie">
+        <label for="f-zabieg">Zabieg</label>
+        <select id="f-zabieg" name="zabieg" required>
+          <option value="">— wybierz —</option>
+          <option>Konsultacja kosmetologiczna</option>
+          <option>Nie wiem, proszę o dobranie zabiegu</option>
+          <optgroup label="Kosmetologia lecznicza i pielęgnacyjna">
+            <option>Peelingi chemiczne</option>
+            <option>Terapie anti-aging</option>
+            <option>Trądzik pospolity i różowaty</option>
+            <option>Przebarwienia i melasma</option>
+            <option>Oczyszczanie, nawilżanie i lifting</option>
+          </optgroup>
+          <optgroup label="Laseroterapia">
+            <option>Laser diodowy — depilacja</option>
+          </optgroup>
+          <optgroup label="Medycyna estetyczna">
+            <option>Mezoterapia igłowa</option>
+            <option>Mezoterapia mikroigłowa</option>
+            <option>Stymulatory tkankowe</option>
+            <option>Lipoliza iniekcyjna</option>
+            <option>Efekt BTX</option>
+          </optgroup>
+          <optgroup label="Inne">
+            <option>Voucher podarunkowy</option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="pole pole--szerokie">
+        <span class="pole__tytul" id="f-termin-etykieta">Termin</span>
+        <div class="terminarz" role="group" aria-labelledby="f-termin-etykieta">
+          <div class="terminarz__gora">
+            <button class="terminarz__nawig" type="button" data-tydzien="-1" aria-label="Poprzedni tydzień">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M15 4.5 7.5 12 15 19.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <p class="terminarz__zakres" id="terminarz-zakres" aria-live="polite"></p>
+            <button class="terminarz__nawig" type="button" data-tydzien="1" aria-label="Następny tydzień">
+              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <div class="terminarz__siatka" id="terminarz-siatka"></div>
+          <p class="terminarz__wybrany" id="terminarz-wybrany">Nie wybrano jeszcze godziny.</p>
+        </div>
+      </div>
+      <div class="pole pole--szerokie">
+        <label for="f-uwagi">Uwagi <span>(nieobowiązkowe)</span></label>
+        <textarea id="f-uwagi" name="uwagi" rows="3" placeholder="Np. pierwsza wizyta, ciąża, przyjmowane leki, alternatywny termin."></textarea>
+      </div>
+
+      <p class="rezerwacja__nota" data-tryb="kalendarz" hidden>Kalendarz pokazuje godziny wolne na&nbsp;dziś — zajęte terminy znikają automatycznie. Po&nbsp;rezerwacji dostaniesz potwierdzenie mailem, a&nbsp;wizyta od&nbsp;razu trafia do&nbsp;kalendarza gabinetu.</p>
+
+      <p class="rezerwacja__blad" id="rezerwacja-blad" role="alert" hidden></p>
+
+      <div class="rezerwacja__akcje">
+        <button class="btn btn--pelny btn--duzy" type="button" data-kanal="whatsapp">Wyślij przez WhatsApp</button>
+        <button class="btn btn--obrys btn--duzy" type="button" data-kanal="mail">Wyślij e-mailem</button>
+        <a class="rezerwacja__tel" href="tel:+48733735890">albo zadzwoń: 733 735 890</a>
+      </div>
+      <p class="rezerwacja__nota" data-tryb="formularz">Grafik pokazuje godziny pracy gabinetu — pojedyncze terminy mogą być już zajęte, dlatego Monika potwierdza każdą rezerwację. Formularz nie wysyła niczego w&nbsp;tle: otwiera WhatsAppa albo Twój program pocztowy z&nbsp;gotową treścią, którą sam(a) wysyłasz, więc dane nie trafiają na&nbsp;żaden zewnętrzny serwer.</p>
+    </form>
+
     <div class="voucher reveal">
       <div>
         <h3>Voucher podarunkowy</h3>
@@ -435,7 +523,7 @@
     <div class="kontakt__lewo">
       <p class="etykieta reveal">05 — Kontakt</p>
       <h2 class="tytul reveal">Wpadnij do&nbsp;Plaza&nbsp;Tower<br><span class="tytul__kursywa">albo po prostu zadzwoń</span></h2>
-      <p class="reveal">Terminy ustalamy telefonicznie albo w&nbsp;wiadomości na&nbsp;Instagramie. Na&nbsp;pierwszą wizytę zarezerwuj trochę więcej czasu — zaczynamy od&nbsp;konsultacji.</p>
+      <p class="reveal">Termin zarezerwujesz <a href="#umow">w&nbsp;formularzu przy zabiegach</a>, telefonicznie albo w&nbsp;wiadomości na&nbsp;Instagramie. Na&nbsp;pierwszą wizytę zarezerwuj trochę więcej czasu — zaczynamy od&nbsp;konsultacji.</p>
       <div class="kontakt__cta reveal">
         <a class="btn btn--pelny btn--duzy" href="tel:+48733735890">733 735 890</a>
         <a class="btn btn--obrys btn--duzy" href="https://www.instagram.com/lila.med.kosmetologia/" target="_blank" rel="noopener">Napisz na&nbsp;Instagramie</a>
@@ -460,93 +548,6 @@
       </table>
     </div>
 
-    <form class="rezerwacja reveal" id="umow" novalidate>
-      <div class="rezerwacja__naglowek">
-        <h3>Umów wizytę online</h3>
-        <p>Wybierz zabieg i&nbsp;godzinę z&nbsp;grafiku, a&nbsp;formularz złoży gotowe zgłoszenie. Rezerwacja jest ważna, kiedy Monika ją&nbsp;potwierdzi — odpisuje zwykle tego samego dnia.</p>
-      </div>
-
-      <!-- Rezerwacja online. Kolory i krój przepisane ze stylu strony,
-           żeby widget był jej częścią, a nie wklejonym okienkiem. -->
-      <div class="rezerwacja__cal" id="rezerwacje-widget"></div>
-      <script src="https://umowterminy.pl/embed.js"
-              data-salon="lila-med"
-              data-accent="#A07C3C"
-              data-bg="#FBF7F2"
-              data-text="#2C2320"
-              data-radius="10"
-              data-font="Outfit, system-ui, sans-serif"
-              data-font-url="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap"
-              data-target="#rezerwacje-widget"></script>
-
-      <div class="pole">
-        <label for="f-imie">Imię i nazwisko</label>
-        <input id="f-imie" name="imie" type="text" autocomplete="name" placeholder="Anna Kowalska" required>
-      </div>
-      <div class="pole">
-        <label for="f-tel">Telefon</label>
-        <input id="f-tel" name="telefon" type="tel" inputmode="tel" autocomplete="tel" placeholder="600 100 200" required>
-      </div>
-      <div class="pole pole--szerokie">
-        <label for="f-zabieg">Zabieg</label>
-        <select id="f-zabieg" name="zabieg" required>
-          <option value="">— wybierz —</option>
-          <option>Konsultacja kosmetologiczna</option>
-          <option>Nie wiem, proszę o dobranie zabiegu</option>
-          <optgroup label="Kosmetologia lecznicza i pielęgnacyjna">
-            <option>Peelingi chemiczne</option>
-            <option>Terapie anti-aging</option>
-            <option>Trądzik pospolity i różowaty</option>
-            <option>Przebarwienia i melasma</option>
-            <option>Oczyszczanie, nawilżanie i lifting</option>
-          </optgroup>
-          <optgroup label="Laseroterapia">
-            <option>Laser diodowy — depilacja</option>
-          </optgroup>
-          <optgroup label="Medycyna estetyczna">
-            <option>Mezoterapia igłowa</option>
-            <option>Mezoterapia mikroigłowa</option>
-            <option>Stymulatory tkankowe</option>
-            <option>Lipoliza iniekcyjna</option>
-            <option>Efekt BTX</option>
-          </optgroup>
-          <optgroup label="Inne">
-            <option>Voucher podarunkowy</option>
-          </optgroup>
-        </select>
-      </div>
-      <div class="pole pole--szerokie">
-        <span class="pole__tytul" id="f-termin-etykieta">Termin</span>
-        <div class="terminarz" role="group" aria-labelledby="f-termin-etykieta">
-          <div class="terminarz__gora">
-            <button class="terminarz__nawig" type="button" data-tydzien="-1" aria-label="Poprzedni tydzień">
-              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M15 4.5 7.5 12 15 19.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-            <p class="terminarz__zakres" id="terminarz-zakres" aria-live="polite"></p>
-            <button class="terminarz__nawig" type="button" data-tydzien="1" aria-label="Następny tydzień">
-              <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" focusable="false"><path d="M9 4.5 16.5 12 9 19.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </div>
-          <div class="terminarz__siatka" id="terminarz-siatka"></div>
-          <p class="terminarz__wybrany" id="terminarz-wybrany">Nie wybrano jeszcze godziny.</p>
-        </div>
-      </div>
-      <div class="pole pole--szerokie">
-        <label for="f-uwagi">Uwagi <span>(nieobowiązkowe)</span></label>
-        <textarea id="f-uwagi" name="uwagi" rows="3" placeholder="Np. pierwsza wizyta, ciąża, przyjmowane leki, alternatywny termin."></textarea>
-      </div>
-
-      <p class="rezerwacja__nota" data-tryb="kalendarz" hidden>Kalendarz pokazuje godziny wolne na&nbsp;dziś — zajęte terminy znikają automatycznie. Po&nbsp;rezerwacji dostaniesz potwierdzenie mailem, a&nbsp;wizyta od&nbsp;razu trafia do&nbsp;kalendarza gabinetu.</p>
-
-      <p class="rezerwacja__blad" id="rezerwacja-blad" role="alert" hidden></p>
-
-      <div class="rezerwacja__akcje">
-        <button class="btn btn--pelny btn--duzy" type="button" data-kanal="whatsapp">Wyślij przez WhatsApp</button>
-        <button class="btn btn--obrys btn--duzy" type="button" data-kanal="mail">Wyślij e-mailem</button>
-        <a class="rezerwacja__tel" href="tel:+48733735890">albo zadzwoń: 733 735 890</a>
-      </div>
-      <p class="rezerwacja__nota" data-tryb="formularz">Grafik pokazuje godziny pracy gabinetu — pojedyncze terminy mogą być już zajęte, dlatego Monika potwierdza każdą rezerwację. Formularz nie wysyła niczego w&nbsp;tle: otwiera WhatsAppa albo Twój program pocztowy z&nbsp;gotową treścią, którą sam(a) wysyłasz, więc dane nie trafiają na&nbsp;żaden zewnętrzny serwer.</p>
-    </form>
   </div>
 </section>
 
