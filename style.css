@@ -544,7 +544,7 @@ body.zablokowane{overflow:hidden}
 .rezerwacja__akcje{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:13px;margin-top:4px}
 .rezerwacja__tel{font-size:14.5px;color:var(--przygas);text-decoration:none;border-bottom:1px solid var(--linia-mocna)}
 .rezerwacja__tel:hover{color:var(--tekst)}
-/* tryb kalendarza cal.com: zostaje nagłówek, osadzony kalendarz i podpis */
+/* tryb kalendarza: zostaje nagłówek, osadzona rezerwacja i podpis */
 .rezerwacja--cal .pole,.rezerwacja--cal .rezerwacja__akcje,.rezerwacja--cal .rezerwacja__blad{display:none}
 .rezerwacja__cal{grid-column:1/-1;min-height:620px;width:100%;overflow:hidden;border-radius:14px}
 .rezerwacja__nota{grid-column:1/-1;margin:0;font-size:13px;line-height:1.55;color:var(--przygas);max-width:70ch}

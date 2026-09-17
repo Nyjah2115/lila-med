@@ -466,10 +466,18 @@
         <p>Wybierz zabieg i&nbsp;godzinę z&nbsp;grafiku, a&nbsp;formularz złoży gotowe zgłoszenie. Rezerwacja jest ważna, kiedy Monika ją&nbsp;potwierdzi — odpisuje zwykle tego samego dnia.</p>
       </div>
 
-      <!-- Tu ląduje kalendarz cal.com z prawdziwymi wolnymi terminami, kiedy
-           w script.js wpiszemy adres rezerwacji. Dopóki jest pusty, karta
-           zostaje przy formularzu poniżej. -->
-      <div class="rezerwacja__cal" id="cal-osadzenie" hidden></div>
+      <!-- Rezerwacja online. Kolory i krój przepisane ze stylu strony,
+           żeby widget był jej częścią, a nie wklejonym okienkiem. -->
+      <div class="rezerwacja__cal" id="rezerwacje-widget"></div>
+      <script src="https://umowterminy.pl/embed.js"
+              data-salon="lila-med"
+              data-accent="#A07C3C"
+              data-bg="#FBF7F2"
+              data-text="#2C2320"
+              data-radius="10"
+              data-font="Outfit, system-ui, sans-serif"
+              data-font-url="https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&display=swap"
+              data-target="#rezerwacje-widget"></script>
 
       <div class="pole">
         <label for="f-imie">Imię i nazwisko</label>
