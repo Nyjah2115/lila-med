@@ -464,90 +464,18 @@ body.zablokowane{overflow:hidden}
 
 
 /* ---- rezerwacja ----
-   Strona jest statyczna (GitHub Pages), więc formularz niczego nie wysyła sam:
-   składa gotową treść i otwiera WhatsAppa albo klienta poczty. Żadnego
-   zewnętrznego serwera, żadnych danych pacjentek lecących przez pośrednika. */
-.rezerwacja{grid-column:1/-1;margin-top:clamp(34px,5vw,56px);
+   Karta mieści osadzony widget rezerwacji (umowterminy.pl). Kolory i krój
+   podajemy widgetowi atrybutami w HTML-u, żeby był częścią strony, a nie
+   wklejonym cudzym okienkiem. */
+.rezerwacja{margin-top:clamp(34px,5vw,56px);
   padding:clamp(26px,3.4vw,40px) clamp(22px,3.2vw,38px);
   border-radius:20px;border:1px solid var(--linia);
   background:var(--karta);box-shadow:var(--cien);
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 22px;align-items:start}
-.rezerwacja__naglowek{grid-column:1/-1}
+  display:grid;gap:18px}
 .rezerwacja__naglowek h3{font-size:clamp(23px,2.4vw,30px);margin:0 0 8px;line-height:1.2}
 .rezerwacja__naglowek p{color:var(--przygas);max-width:62ch;margin:0;font-size:15.5px}
-.pole{display:grid;gap:7px;min-width:0}
-.pole--szerokie{grid-column:1/-1}
-.pole label{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--akcent-ciemny)}
-.pole label span{letter-spacing:.06em;text-transform:none;color:var(--przygas);font-weight:300}
-.pole input,.pole select,.pole textarea{
-  font:inherit;font-size:16px;color:var(--tekst);width:100%;
-  padding:13px 14px;border:1px solid var(--linia-mocna);border-radius:12px;
-  background:var(--tlo);appearance:none;
-  transition:border-color .25s,background .25s,box-shadow .25s;
-  /* pola muszą przyjmować zaznaczanie, mimo że reszta strony go nie ma */
-  -webkit-user-select:text;user-select:text}
-.pole textarea{resize:vertical;min-height:84px;line-height:1.5}
-.pole select{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 9.5 12 15.5 18 9.5' fill='none' stroke='%237B6B62' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 12px center;background-size:19px;padding-right:40px}
-.pole input:focus,.pole select:focus,.pole textarea:focus{outline:none;background:#fff;
-  border-color:var(--akcent);box-shadow:0 0 0 3px rgba(160,124,60,.16)}
-.pole input::placeholder,.pole textarea::placeholder{color:var(--przygas);opacity:.62}
-.pole--zle input,.pole--zle select{border-color:#B4453C;background:#FDF3F1}
-.pole__tytul{font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--akcent-ciemny)}
-
-/* ---- terminarz ----
-   Godziny biorą się z grafiku gabinetu, nie z kalendarza Moniki — statyczna
-   strona nie ma skąd wiedzieć, co jest zajęte. Stąd podpis pod siatką. */
-.terminarz{border:1px solid var(--linia-mocna);border-radius:14px;
-  background:var(--tlo);padding:14px 14px 12px;transition:border-color .25s,background .25s}
-.terminarz.pole--zle{border-color:#B4453C;background:#FDF3F1}
-.terminarz__gora{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:13px}
-.terminarz__zakres{margin:0;font-size:14.5px;letter-spacing:.03em;text-align:center;min-width:0;
-  font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
-.terminarz__nawig{flex:none;width:36px;height:36px;display:grid;place-items:center;
-  border:1px solid var(--linia-mocna);border-radius:50%;background:var(--karta);
-  color:var(--tekst);cursor:pointer;transition:border-color .25s,color .25s,opacity .25s}
-.terminarz__nawig:hover:not(:disabled){border-color:var(--braz);color:var(--braz)}
-.terminarz__nawig:disabled{opacity:.3;cursor:default}
-.terminarz__siatka{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}
-.terminarz__kolumna{display:grid;gap:6px;align-content:start;min-width:0}
-.terminarz__naglowek{margin:0 0 3px;padding-bottom:7px;text-align:center;font-size:12.5px;
-  color:var(--przygas);border-bottom:1px solid var(--linia);
-  font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1}
-.terminarz__naglowek b{font-weight:500;color:var(--tekst);letter-spacing:.04em}
-.terminarz__godzina{font:inherit;font-size:13.5px;padding:9px 2px;border-radius:9px;
-  border:1px solid var(--linia);background:var(--karta);color:var(--tekst);cursor:pointer;
-  font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;
-  transition:border-color .2s,background .2s,color .2s}
-.terminarz__godzina:hover{border-color:var(--akcent);color:var(--akcent-ciemny)}
-.terminarz__godzina.jest-wybrana{background:var(--braz);border-color:var(--braz);color:#F5EADA}
-.terminarz__godziny .terminarz__pusto{grid-column:1/-1}
-.terminarz__pusto{margin:0;text-align:center;font-size:13px;color:var(--przygas);opacity:.75;padding:6px 0}
-.terminarz__wybrany{margin:13px 0 0;font-size:13.5px;color:var(--przygas);text-align:center}
-.terminarz__wybrany.jest-wybrany{color:var(--akcent-ciemny)}
-/* widok wąski: najpierw dzień, potem godziny tego dnia */
-.terminarz__siatka--dzien{grid-template-columns:minmax(0,1fr);gap:14px}
-.terminarz__dni{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
-.terminarz__dzien{font:inherit;display:grid;gap:1px;padding:8px 0;border-radius:10px;
-  border:1px solid var(--linia);background:var(--karta);color:var(--tekst);cursor:pointer;
-  font-variant-numeric:lining-nums;font-feature-settings:"lnum" 1;
-  transition:border-color .2s,background .2s,color .2s}
-.terminarz__dzien b{font-weight:500;font-size:13px;letter-spacing:.03em}
-.terminarz__dzien span{font-size:11.5px;color:var(--przygas)}
-.terminarz__dzien.jest-otwarty{border-color:var(--braz);background:var(--braz);color:#F5EADA}
-.terminarz__dzien.jest-otwarty span{color:rgba(245,234,218,.75)}
-.terminarz__dzien.jest-pusty{opacity:.4;cursor:default}
-.terminarz__godziny{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:7px}
-.rezerwacja__blad{grid-column:1/-1;margin:0;font-size:14.5px;color:#9B3B33}
-.rezerwacja__akcje{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:13px;margin-top:4px}
-.rezerwacja__tel{font-size:14.5px;color:var(--przygas);text-decoration:none;border-bottom:1px solid var(--linia-mocna)}
-.rezerwacja__tel:hover{color:var(--tekst)}
-/* tryb kalendarza: zostaje nagłówek, osadzona rezerwacja i podpis */
-.rezerwacja--cal .pole,.rezerwacja--cal .rezerwacja__akcje,.rezerwacja--cal .rezerwacja__blad{display:none}
-.rezerwacja__cal{grid-column:1/-1;min-height:620px;width:100%;overflow:hidden;border-radius:14px}
-.rezerwacja__nota{grid-column:1/-1;margin:0;font-size:13px;line-height:1.55;color:var(--przygas);max-width:70ch}
+.rezerwacja__cal{min-height:620px;width:100%;overflow:hidden;border-radius:14px}
+.rezerwacja__nota{margin:0;font-size:13px;line-height:1.55;color:var(--przygas);max-width:70ch}
 
 /* ---- stopka ---- */
 :root{--stopka-tlo:#544540;--stopka-zloto:#E3C79F}
@@ -674,10 +602,6 @@ body.zablokowane{overflow:hidden}
   .opinie__strzalka svg{width:17px;height:17px}
   .opinie__sterowanie{justify-content:center;flex-wrap:wrap;gap:12px 14px;margin-top:20px}
   .opinie__link{margin:0;font-size:14.5px}
-  .rezerwacja{grid-template-columns:minmax(0,1fr);text-align:left}
-  .rezerwacja__akcje{justify-content:stretch}
-  .rezerwacja__akcje .btn{flex:1 1 100%}
-  .rezerwacja__tel{width:100%;text-align:center;border-bottom:0}
   .stopka__gora{flex-direction:column;text-align:center}
   .stopka__kontakt{text-align:center}
   .stopka__kontakt a{justify-self:center}
@@ -723,6 +647,28 @@ body.zablokowane{overflow:hidden}
   .rezerwacja__naglowek h3{font-size:clamp(30px,2.4vw,38px)}
   .sekcja{padding:clamp(150px,8vw,190px) 0}
   .karuzela__el{width:clamp(360px,26vw,470px)}
+
+  /* drobnica interfejsu też musi urosnąć — inaczej pasek nawigacji wygląda
+     jak przyklejony z mniejszego ekranu obok nagłówka na 104 px */
+  .nav__inner{padding:18px clamp(20px,5vw,40px)}
+  .nav__nazwa{font-size:23px}
+  .nav__menu{gap:clamp(30px,2.4vw,42px)}
+  .nav__menu a:not(.btn){font-size:16.5px}
+  .nav__ikona{width:46px;height:46px}
+  .nav__ikona svg{width:19px;height:19px}
+  .btn{font-size:14.5px}
+  .btn--duzy{font-size:15px}
+  .hero__nad{font-size:13.5px;gap:16px}
+  .hero__nad span{width:56px}
+  .hero__ocena{font-size:16px}
+  .hero__ocena strong{font-size:23px}
+  .etykieta{font-size:14px}
+  .pasek__el strong{font-size:17.5px}
+  .pasek__el span{font-size:15px}
+  .pasek__ocena{font-size:26px!important}
+  .pasek__gwiazdki{font-size:14px}
+  .dane dt,.godziny caption{font-size:13.5px}
+  .dane dd,.godziny{font-size:18px}
 }
 @media (min-width:2200px){
   body{font-size:19.5px}
